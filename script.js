@@ -1,22 +1,36 @@
 $(document).ready(function () {
 
-    var roomID = 0;
+    var roomID;
     var roomArray = new Array();
 
     // Add a room
-    $("#btnCheck").click(function () {
+    $("#btnAddRoom").click(function () {
         roomID++;
         let newRoomName = $("#txtRoom").val();
 
         if (newRoomName == "") {
             newRoomName = RandomNum();
+            roomArray.push(newRoomName);
+            console.log(roomArray);
         } else {
             roomArray.push(newRoomName);
-            console.log(roomArray.length);
+            console.log(roomArray);
         }
 
-        $("#listBtns").append("<button id='btn" + roomID + "' class='btn btn-info'"
-            + "style='margin: 3px;'>" + newRoomName + "</button>");
+        $("#listBtns").append("<button id='btn" + roomID + "'class='btn-info' style='margin: 3px;'>" + newRoomName + "</button>");
+    });
+
+    // Room selector
+    $(document).on("click", ".btn-info", function() {
+        let txtTemp = ($(this).text());
+        let indexTemp = roomArray.indexOf(txtTemp);
+
+        // If input is not manually entered, gets 'bugged' when looking for an index
+        if (indexTemp == -1) {
+            indexTemp = "ERROR"
+        } 
+
+        $("#txtRoomSel").html("Selected: " + txtTemp + ", Index No. " + indexTemp);
     });
 
     // Random number generator

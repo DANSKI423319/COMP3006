@@ -14,18 +14,22 @@
     <h4 class="text-muted">Status Checker</h4>
     <br>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-4 border border-primary rounded" style="padding: 10px;">
             <h5>Controller</h5>
             <div class="form-inline">
                 <input id="txtRoom" type="text" class="form-control" placeholder="Type here..." maxlength="10">
-                <button id="btnCheck" class="btn btn-primary">Add Room</button>
+                <button id="btnAddRoom" class="btn btn-primary">Add Room</button><br><br>
+                <button id="btnUnCheck" class="btn btn-danger">Deselect Room</button>
             </div>
             <br>
             <h5>Rooms</h5>
-            <div id="listBtns" class="btn-group-vertical"></div>
+            <div id="listBtns" class="btn-group-vertical" style="overflow:auto; max-height: 200px;"></div>
         </div>
-        <div class="col-sm-8" style="background-color: beige;">
-            <p id="txtCheck"></p>
+        <div class="col-sm-8 border border-secondary rounded" style="padding: 10px;">
+            <div id="formBox">
+                <h5>Computer Room</h5>
+                <h6 id="txtRoomSel"></h6>
+            </div>
         </div>
     </div>
 
