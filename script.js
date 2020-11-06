@@ -6,31 +6,47 @@ $(document).ready(function () {
     // Add a room
     $("#btnAddRoom").click(function () {
         roomID++;
-        let newRoomName = $("#txtRoom").val();
+        let roomName = $("#txtRoom").val();
+        var invalid = false;
 
-        if (newRoomName == "") {
-            newRoomName = RandomNum();
-            roomArray.push(newRoomName);
-            console.log(roomArray);
+        if (roomName == "") {
+            roomName = RandomNum();
+            roomArray.push(roomName);
+            addNewRoom(roomID, roomName);
+            $("#txtRoom").val("");
+
         } else {
-            roomArray.push(newRoomName);
-            console.log(roomArray);
-        }
 
-        $("#listBtns").append("<button id='btn" + roomID + "'class='btn-info' style='margin: 3px;'>" + newRoomName + "</button>");
+            // Valid entry check
+            for (i = 0; i < roomArray.length; i++) {
+                if (roomArray[i] == roomName) {
+                    invalid = true;
+                    $("#txtRoom").val("");
+                    { break }
+                }
+            }
+
+            // Valid entry
+            if (invalid == false) {
+                roomArray.push(roomName);
+                addNewRoom(roomID, roomName);
+                $("#txtRoom").val("");
+            }
+        }
     });
 
-    // Room selector
-    $(document).on("click", ".btn-info", function() {
+    // Room selection identifier
+    $(document).on("click", ".btn-info", function () {
         let txtTemp = ($(this).text());
-        let indexTemp = roomArray.indexOf(txtTemp);
+        indexTemp = returnRoomIndex(txtTemp);
 
-        // If input is not manually entered, gets 'bugged' when looking for an index
-        if (indexTemp == -1) {
-            indexTemp = "ERROR"
-        } 
+        // Tell user if something is wrong
+        if (indexTemp == "undefined") {
+            indexTemp = "ERROR";
+        }
 
-        $("#txtRoomSel").html("Selected: " + txtTemp + ", Index No. " + indexTemp);
+        $("#txtRoomSel1").html("Selected: " + txtTemp + ", Index No. " + indexTemp);
+        $("#txtRoomSel2").html("Selected: " + txtTemp + ", Index No. " + indexTemp);
     });
 
     // Random number generator
@@ -38,6 +54,20 @@ $(document).ready(function () {
         var RandomNum = Math.random();
         var RefinedNum = Math.round(RandomNum * 10000);
         return RefinedNum;
+    }
+
+    // Add new room
+    function addNewRoom(id, name) {
+        $("#listBtns").append("<button id=\"btn" + id + "\" class=\"btn-info\" style=\"margin: 3px;\">" + name + "</button>");
+    }
+
+    // Get index of room
+    function returnRoomIndex(name) {
+        for (var i = 0; i < roomArray.length; i++) {
+            if (name == roomArray[i]) {
+                return i;
+            }
+        }
     }
 
 });
