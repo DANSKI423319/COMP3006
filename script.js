@@ -32,7 +32,6 @@ function addNewPC(id, status, notes, roomid) {
     }
 
     computerArray.push(newPC);
-    console.log(computerArray);
 }
 
 // Get index of room
@@ -134,31 +133,48 @@ $(document).ready(function () {
         loadTable();
     });
 
-    // Code test environment
-    $(window).ready(function () {
-        /*
-        let i = 0
-        while (i < 3) {
-            addNewRoom((i), ("Room " + i + ""));
-            i++
-        }
-        */
-    });
+    // $(window).ready(function () {} );
+    
 });
 
 /////////////////////// MOCHA & CHAI TESTING ///////////////////////
 
-suite("Application Testing Suite", function () {
+suite("Testing Suite", function () {
 
     setup(function () {
-        // Blank
+        this.roomName = "Room 4";
+        this.roomID = computerArray.length;
+        this.pcID = "D29PC";
+        this.pcStatus = "Working";
+        this.notes = "N/a"
+        this.pcRoomID = 0;
     });
 
     teardown(function () {
-        // Blank...
+        $("#listBtns").empty();
+        roomArray = [];
+        $("#tblComputer").empty();
+        computerArray = [];
     });
 
-    test("Song of Tests and Fire", function () {
-        chai.assert.equal("nothing", "nothing", "Correct, you know nothing about testing");
+    test("Add a room", function () {
+        addNewRoom(this.roomID, this.roomName);
+
+        /*
+        - Test UI, inoperable -
+        $("txtRoom").val(this.roomName); 
+        clickElement($("#btnAddRoom"));
+        */
+
+        let checker = $("#btn0").html();
+        chai.assert.equal(this.roomName, checker, "Cannot find expected Room value");
+    });
+
+    test("Add a computer", function () {
+        addNewRoom(this.roomID, this.roomName);
+        addNewPC(this.pcID, this.pcStatus, this.pcNotes, this.pcRoomID);
+
+        let checker = computerArray[0].id;
+        chai.assert.equal(this.pcID, checker, "Cannot find expected PC ID");
     });
 });
