@@ -2,6 +2,8 @@ var roomArray = new Array();
 var computerArray = new Array();
 var roomSel;
 
+//////////////////////////// JAVASCRIPT ////////////////////////////
+
 // Random number generator
 function RandomNum() {
     var RandomNum = Math.random();
@@ -43,7 +45,7 @@ function returnRoomIndex(name) {
 }
 
 // Load table
-function loadTable(){
+function loadTable() {
     $("#tblComputer").empty();
     for (i = 0; i < computerArray.length; i++) {
         if (computerArray[i].roomid == roomSel) {
@@ -57,6 +59,18 @@ function addToTable(entry1, entry2, entry3) {
     $("#tblComputer").append("<tr><td>" + entry1 + "</td><td>"
         + entry2 + "</td><td>" + entry3 + "</td></tr>");
 }
+
+// Click event for testing
+function clickElement(element) {
+    try {
+        element.trigger("click");
+    } catch (err) {
+        var event = new MouseEvent("click", { view: window, cancelable: true, bubbles: true });
+        element.dispatchEvent(event);
+    }
+}
+
+////////////////////////////// JQUERY //////////////////////////////
 
 $(document).ready(function () {
 
@@ -94,14 +108,14 @@ $(document).ready(function () {
         let tempStatus = $("#comInputStatus").val();
         let tempNotes = $("#comInputNotes").val();
         let tempRoomID = roomSel;
-        
+
         if (tempID == "") { tempID = RandomNum(); }
 
         // Add a check loop for duplicate IDs here... 
         // ...
-        
+
         addNewPC(tempID, tempStatus, tempNotes, tempRoomID);
-        
+
         // Populate table
         loadTable();
     });
@@ -122,11 +136,29 @@ $(document).ready(function () {
 
     // Code test environment
     $(window).ready(function () {
-
+        /*
         let i = 0
         while (i < 3) {
             addNewRoom((i), ("Room " + i + ""));
             i++
         }
+        */
+    });
+});
+
+/////////////////////// MOCHA & CHAI TESTING ///////////////////////
+
+suite("Application Testing Suite", function () {
+
+    setup(function () {
+        // Blank
+    });
+
+    teardown(function () {
+        // Blank...
+    });
+
+    test("Song of Tests and Fire", function () {
+        chai.assert.equal("nothing", "nothing", "Correct, you know nothing about testing");
     });
 });
