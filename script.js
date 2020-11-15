@@ -19,7 +19,7 @@ function addNewRoom(id, name) {
     }
 
     roomArray.push(newRoom);
-    $("#listBtns").append("<button id=\"btn" + id + "\" class=\"btn-info\" style=\"margin: 3px;\">" + name + "</button>");
+    $("#roomList").append("<button id=\"btn" + id + "\" class=\"btn-info\" style=\"margin: 3px;\">" + name + "</button>");
 }
 
 // Add new computer
@@ -54,9 +54,10 @@ function loadTable() {
 }
 
 // Add to a table
-function addToTable(entry1, entry2, entry3) {
-    $("#tblComputer").append("<tr><td>" + entry1 + "</td><td>"
-        + entry2 + "</td><td>" + entry3 + "</td></tr>");
+function addToTable(id, status, notes) {
+    $("#tblComputer").append("<tr><td>" + id + "</td><td>"
+        + status + "</td><td>" + notes + "</td><td>"
+        + "<button>Edit</button>" + "</td></tr>");
 }
 
 // Click event for testing
@@ -92,7 +93,6 @@ $(document).ready(function () {
                     { break }
                 }
             }
-
             // Valid entry
             if (invalid == false) {
                 addNewRoom(roomID, roomName);
@@ -107,15 +107,29 @@ $(document).ready(function () {
         let tempStatus = $("#comInputStatus").val();
         let tempNotes = $("#comInputNotes").val();
         let tempRoomID = roomSel;
+        let invalid = false;
 
-        if (tempID == "") { tempID = RandomNum(); }
+        if (tempID == "") {
+            tempID = RandomNum();
+            addNewPC(tempID, tempStatus, tempNotes, tempRoomID);
+            $("#comInputID").val("");
+        } else {
+            // Valid entry check
+            for (i = 0; i < computerArray.length; i++) {
+                if (computerArray[i].id == tempID) {
+                    invalid = true;
+                    $("#comInputID").val("");
+                    { break }
+                }
+            }
+            // Valid entry
+            if (invalid == false) {
+                addNewPC(tempID, tempStatus, tempNotes, tempRoomID);
+                $("#comInputID").val("");
+            }
+        }
 
-        // Add a check loop for duplicate IDs here... 
-        // ...
-
-        addNewPC(tempID, tempStatus, tempNotes, tempRoomID);
-
-        // Populate table
+        // Reload table
         loadTable();
     });
 
@@ -134,7 +148,7 @@ $(document).ready(function () {
     });
 
     // $(window).ready(function () {} );
-    
+
 });
 
 /////////////////////// MOCHA & CHAI TESTING ///////////////////////
@@ -151,7 +165,7 @@ suite("Testing Suite", function () {
     });
 
     teardown(function () {
-        $("#listBtns").empty();
+        $("#roomList").empty();
         roomArray = [];
         $("#tblComputer").empty();
         computerArray = [];
