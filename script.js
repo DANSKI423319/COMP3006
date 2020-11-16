@@ -1,6 +1,7 @@
 var roomArray = new Array();
 var computerArray = new Array();
-var roomSel;
+var roomSelectionID;
+var roomSelectionName;
 
 //////////////////////////// JAVASCRIPT ////////////////////////////
 
@@ -17,7 +18,6 @@ function addNewRoom(id, name) {
         id: id,
         name: name,
     }
-
     roomArray.push(newRoom);
     $('#roomList').append('<button id=\'btn' + id + '\' class=\'btn-info\' style=\'margin: 3px;\'>' + name + '</button>');
 }
@@ -30,7 +30,6 @@ function addNewPC(id, status, notes, roomid) {
         notes: notes,
         roomid: roomid,
     }
-
     computerArray.push(newPC);
 }
 
@@ -47,7 +46,7 @@ function returnRoomIndex(name) {
 function loadTable() {
     $('#tblComputer').empty();
     for (i = 0; i < computerArray.length; i++) {
-        if (computerArray[i].roomid == roomSel) {
+        if (computerArray[i].roomid == roomSelectionID) {
             addToTable(computerArray[i].id, computerArray[i].status, computerArray[i].notes)
         }
     }
@@ -75,7 +74,7 @@ function clickElement(element) {
 $(document).ready(function () {
 
     // Add a room
-    $('#btnAddRoom').click(function () {
+    $('#btnRoomAdd').click(function () {
         let roomName = $('#txtRoom').val();
         let roomID;
         let invalid = false;
@@ -103,11 +102,11 @@ $(document).ready(function () {
     });
 
     // Add a computer
-    $('#btnAddComputer').click(function () {
-        let tempID = $('#comInputID').val();
-        let tempStatus = $('#comInputStatus').val();
-        let tempNotes = $('#comInputNotes').val();
-        let tempRoomID = roomSel;
+    $('#btnComputerAdd').click(function () {
+        let tempID = $('#txtComputerID').val();
+        let tempStatus = $('#txtComputerStatus').val();
+        let tempNotes = $('#txtComputerNotes').val();
+        let tempRoomID = roomSelectionID;
         let invalid = false;
 
         if (tempID == '') {
@@ -131,19 +130,16 @@ $(document).ready(function () {
 
         // Reload table
         loadTable();
-        console.log("### ADDING COMPUTER")
-        console.log(computerArray)
     });
 
     // Room selection 
     $(document).on('click', '.btn-info', function () {
-        let txtTemp = ($(this).text());
-        roomSel = returnRoomIndex(txtTemp);
-        $('#btnAddComputer').prop('disabled', false);
+        roomSelectionName = ($(this).text());
+        roomSelectionID = returnRoomIndex(roomSelectionName);
+        $('#btnComputerAdd').prop('disabled', false);
 
         // Tell user which room is selected
-        $('#txtRoomSel1').html('Selected: ' + txtTemp + ', Index No. ' + roomSel);
-        $('#txtRoomSel2').html('Selected: ' + txtTemp + ', Index No. ' + roomSel);
+        $('#txtRoomSel').html('Selected: ' + roomSelectionName + ', Index No. ' + roomSelectionID);
 
         // Populate table
         loadTable();
@@ -152,7 +148,6 @@ $(document).ready(function () {
     // Computer removal
     $(document).on('click', '.btn-danger', function() {
         //let txtTemp = '#' + ($(this).attr('id'));
-        //alert(txtTemp);
         let col = ($(this).closest('tr').find('td:eq(0)').text());
         let row = "#" + ($(this).closest('tr').attr('id'));
 
@@ -168,7 +163,6 @@ $(document).ready(function () {
         $(row).remove();      
         console.log(computerArray)         
     });
-
 
     // $(window).ready(function () {});
 

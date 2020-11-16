@@ -19,31 +19,31 @@
     <div class="row">
         <div id="padded-box" class="col-sm-3 border border-primary rounded">
             <h5>Controller</h5>
-            <div class="form-inline">
-                <input id="txtRoom" type="text" class="form-control" placeholder="Type here..." maxlength="10" />
-                <button id="btnAddRoom" class="btn btn-primary">Add Room</button>
-                <button id="btnUnCheck" class="btn btn-danger">Deselect Room</button>
+            <div class="form-group">
+                <input id="txtRoom" type="text" class="form-control" placeholder="Leave blank for random name" maxlength="10" />
+                <button id="btnRoomAdd" class="btn btn-primary form-control">Add Room</button>
+                <button id="btnUnCheck" class="btn btn-danger form-control">Deselect Room</button>
             </div>
             <br />
             <h5>Rooms</h5>
-            <div id="roomList" class="btn-group-vertical"></div>
+            <div id="roomList" class="btn-group-horizontal"></div><br>
+            <button id="btnRoomRemove" class="btn btn-danger" disabled="true">Remove Room</button>
         </div>
 
         <!-- COMPUTER CONTROLLER -->
         <div id="padded-box" class="col-sm-3 border border-secondary rounded">
             <div id="formBox">
                 <h5>Computer Room</h5>
-                <h6 id="txtRoomSel1" style="color: green"></h6>
                 <div id="computer-form-box" class="border border-secondary rounded;">
                     <form>
                         <div class="form-group">
-                            <label for="comInputID">Computer ID (10 characters)</label>
-                            <input type="text" id="comInputID" class="form-control" maxlength="10"
+                            <label for="txtComputerID">Computer ID (10 characters)</label>
+                            <input type="text" id="txtComputerID" class="form-control" maxlength="10"
                                 placeholder="Leave blank for random ID" />
                         </div>
                         <div class="form-group">
-                            <label for="comInputStatus">Computer Status</label>
-                            <select id="comInputStatus" class="form-control">
+                            <label for="txtComputerStatus">Computer Status</label>
+                            <select id="txtComputerStatus" class="form-control">
                                 <option>Working</option>
                                 <option>Not working</option>
                                 <option>Scheduled for maintenance</option>
@@ -51,10 +51,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="comInputNotes">Computer Notes</label>
-                            <input type="text" id="comInputNotes" class="form-control" placeholder="Notes" />
+                            <label for="txtComputerNotes">Computer Notes</label>
+                            <input type="text" id="txtComputerNotes" class="form-control" placeholder="Notes" />
                         </div>
-                        <input type="button" id="btnAddComputer" class="btn btn-primary" disabled="true"
+                        <input type="button" id="btnComputerAdd" class="btn btn-primary" disabled="true"
                             value="Add Computer" />
                     </form>
                 </div>
@@ -67,7 +67,7 @@
     <div class="row">
         <div id="padded-box" class="col-sm-6 border border-secondary rounded">
             <div id="table-overflow">
-                <h6 id="txtRoomSel2" style="color: green"></h6>
+                <h6 id="txtRoomSel" style="color: green"></h6>
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>

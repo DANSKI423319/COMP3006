@@ -5,7 +5,8 @@
 
 #roomList {
     overflow: auto; 
-    max-height:200px;
+    max-height:120px;
+    height: 150px;
 }
 
 #padded-box {
