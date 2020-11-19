@@ -1,7 +1,6 @@
 var roomArray = new Array();
 var computerArray = new Array();
-var roomSelectionID;
-var roomSelectionName;
+var roomSelection;
 
 //////////////////////////// JAVASCRIPT ////////////////////////////
 
@@ -13,30 +12,30 @@ function RandomNum() {
 }
 
 // Add new room
-function addNewRoom(id, name) {
+function addNewRoom(_id) {
     var newRoom = {
-        id: id,
-        name: name,
+        id: _id,
     }
     roomArray.push(newRoom);
-    $('#roomList').append('<button id=\'btn' + id + '\' class=\'btn-info\' style=\'margin: 3px;\'>' + name + '</button>');
+    $('#roomList').append('<button id=\'btn' + _id + '\' class=\'btn-info\' style=\'margin: 3px;\'>' + _id + '</button>');
 }
 
 // Add new computer
-function addNewPC(id, status, notes, roomid) {
+function addNewPC(_id, _status, _notes, _roomid) {
     var newPC = {
-        id: id,
-        status: status,
-        notes: notes,
-        roomid: roomid,
+        id: _id,
+        status: _status,
+        notes: _notes,
+        roomid: _roomid,
     }
+
     computerArray.push(newPC);
 }
 
 // Get index of room
-function returnRoomIndex(name) {
+function returnRoomIndex(search) {
     for (var i = 0; i < roomArray.length; i++) {
-        if (name == roomArray[i].name) {
+        if (roomArray[i].id == search) {
             return i;
         }
     }
@@ -46,7 +45,7 @@ function returnRoomIndex(name) {
 function loadTable() {
     $('#tblComputer').empty();
     for (i = 0; i < computerArray.length; i++) {
-        if (computerArray[i].roomid == roomSelectionID) {
+        if (computerArray[i].roomid == roomSelection) {
             addToTable(computerArray[i].id, computerArray[i].status, computerArray[i].notes)
         }
     }
@@ -82,7 +81,7 @@ $(document).ready(function () {
         if (roomName == '') {
             roomName = RandomNum();
             roomID = roomName;
-            addNewRoom(roomID, roomName);
+            addNewRoom(roomName);
             $('#txtRoom').val('');
         } else {
             // Validity check
@@ -95,7 +94,7 @@ $(document).ready(function () {
             }
             if (invalid == false) {
                 roomID = RandomNum();
-                addNewRoom(roomID, roomName);
+                addNewRoom(roomName);
                 $('#txtRoom').val('');
             }
         }
@@ -106,7 +105,7 @@ $(document).ready(function () {
         let tempID = $('#txtComputerID').val();
         let tempStatus = $('#txtComputerStatus').val();
         let tempNotes = $('#txtComputerNotes').val();
-        let tempRoomID = roomSelectionID;
+        let tempRoomID = roomSelection;
         let invalid = false;
 
         if (tempID == '') {
@@ -134,18 +133,19 @@ $(document).ready(function () {
 
     // Room selection 
     $(document).on('click', '.btn-info', function () {
-        roomSelectionName = ($(this).text());
-        roomSelectionID = returnRoomIndex(roomSelectionName);
+        roomSelection = ($(this).text());
+        let tempIndex = returnRoomIndex(roomSelection);
         $('#btnComputerAdd').prop('disabled', false);
+        $('#btnRoomRemove').prop('disabled', false);
 
         // Tell user which room is selected
-        $('#txtRoomSel').html('Selected: ' + roomSelectionName + ', Index No. ' + roomSelectionID);
+        $('#txtRoomSel').html('Selected: ' + roomSelection + ', Index No. ' + tempIndex);
 
         // Populate table
         loadTable();
     });
 
-    // Computer removal
+    // Computer removal // NEEDS WORK
     $(document).on('click', '.btn-danger', function() {
         //let txtTemp = '#' + ($(this).attr('id'));
         let col = ($(this).closest('tr').find('td:eq(0)').text());
@@ -164,6 +164,9 @@ $(document).ready(function () {
         console.log(computerArray)         
     });
 
+    // Room Removal // NEEDS WORK
+    // CODE HERE:   //
+
     // $(window).ready(function () {});
 
 });
@@ -173,8 +176,7 @@ $(document).ready(function () {
 suite('Testing Suite', function () {
 
     setup(function () {
-        this.roomName = 'Room 4';
-        this.roomID = computerArray.length;
+        this.roomID = "Room 4";
         this.pcID = 'D29PC';
         this.pcStatus = 'Working';
         this.notes = 'N/a'
@@ -189,7 +191,7 @@ suite('Testing Suite', function () {
     });
 
     test('Add a room', function () {
-        addNewRoom(this.roomID, this.roomName);
+        addNewRoom(this.roomID);
 
         /*
         - Test UI, inoperable -
@@ -202,7 +204,7 @@ suite('Testing Suite', function () {
     });
 
     test('Add a computer', function () {
-        addNewRoom(this.roomID, this.roomName);
+        addNewRoom(this.roomID);
         addNewPC(this.pcID, this.pcStatus, this.pcNotes, this.pcRoomID);
 
         let checker = computerArray[0].id;
