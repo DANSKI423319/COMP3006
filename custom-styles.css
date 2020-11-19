@@ -17,3 +17,7 @@
     background-color: rgb(223, 223, 223); 
     padding: 10px
 }
+
+.red-border {
+    border-style: solid 2px, red;
+}

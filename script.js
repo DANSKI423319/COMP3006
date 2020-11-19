@@ -146,26 +146,42 @@ $(document).ready(function () {
     });
 
     // Computer removal // NEEDS WORK
-    $(document).on('click', '.btn-danger', function() {
-        //let txtTemp = '#' + ($(this).attr('id'));
-        let col = ($(this).closest('tr').find('td:eq(0)').text());
-        let row = "#" + ($(this).closest('tr').attr('id'));
+    $(document).on('click', '.btn-danger', function () {
+        // Clarifies to only activate within the table
+        if ($(this).text() == "Remove") {
+            let col = ($(this).closest('tr').find('td:eq(0)').text());
+            let row = "#" + ($(this).closest('tr').attr('id'));
 
-        console.log(col);
+            console.log(col);
 
-        for (i = 0; i < computerArray.length; i++) {
-            if (computerArray[i].id == col) {
-                computerArray.splice(i, i);
-                { break }
+            for (i = 0; i < computerArray.length; i++) {
+                if (computerArray[i].id == col) {
+                    computerArray.splice(i, i);
+                    { break }
+                }
             }
-        }
 
-        $(row).remove();      
-        console.log(computerArray)         
+            $(row).remove();
+            console.log(computerArray)
+        }
     });
 
     // Room Removal // NEEDS WORK
-    // CODE HERE:   //
+    // CODE HERE:
+    $('#btnRoomRemove').click(function () {
+        let tempTxt = "#btn" + roomSelection;
+        console.log(tempTxt);
+        
+        // First, empty computer array of any computers in that room
+        for (i = 0; i < computerArray.length; i++) {
+            if (computerArray[i].roomid == roomSelection) {
+                console.log("Would remove:");
+                console.log(computerArray[i]);
+            }
+        }
+
+        // Second, remove room that has no computers in it
+    });
 
     // $(window).ready(function () {});
 
