@@ -4,13 +4,6 @@ var roomSelection;
 
 //////////////////////////// JAVASCRIPT ////////////////////////////
 
-// Random number generator
-function RandomNum() {
-    var RandomNum = Math.random();
-    var RefinedNum = Math.round(RandomNum * 10000);
-    return RefinedNum;
-}
-
 // Add new room
 function addNewRoom(_id) {
     var newRoom = {
@@ -41,6 +34,15 @@ function returnRoomIndex(search) {
     }
 }
 
+// GEt index of computer
+function returnComputerIndex(search) {
+    for (var i = 0; i < computerArray.length; i++) {
+        if (computerArray[i].id == search) {
+            return i;
+        }
+    }
+}
+
 // Load table
 function loadTable() {
     $('#tblComputer').empty();
@@ -66,6 +68,33 @@ function clickElement(element) {
         var event = new MouseEvent('click', { view: window, cancelable: true, bubbles: true });
         element.dispatchEvent(event);
     }
+}
+
+// Random number generator
+function RandomNum() {
+    var RandomNum = Math.random();
+    var RefinedNum = Math.round(RandomNum * 10000);
+    return RefinedNum;
+}
+
+function removeRoom() {
+
+}
+
+function removeComputer(row, col) {
+    for (i = 0; i < computerArray.length; i++) {
+        if (computerArray[i].id == col) {
+            computerArray.splice(i, i);
+            { break }
+        }
+    }
+    $(row).remove();
+}
+
+function arrayRemove(arr, value) {
+    return arr.filter(function (ele) {
+        return ele != value;
+    });
 }
 
 ////////////////////////////// JQUERY //////////////////////////////
@@ -145,40 +174,53 @@ $(document).ready(function () {
         loadTable();
     });
 
-    // Computer removal // NEEDS WORK
+    // Computer removal // Needs work
     $(document).on('click', '.btn-danger', function () {
         // Clarifies to only activate within the table
         if ($(this).text() == "Remove") {
             let col = ($(this).closest('tr').find('td:eq(0)').text());
             let row = "#" + ($(this).closest('tr').attr('id'));
-
             console.log(col);
 
-            for (i = 0; i < computerArray.length; i++) {
-                if (computerArray[i].id == col) {
-                    computerArray.splice(i, i);
-                    { break }
-                }
-            }
+            // METHOD 1
+            /////////////
+            // for (i = 0; i < computerArray.length; i++) {
+            //     if (computerArray[i].id == col) {
+            //         computerArray.splice(i, i);
+            //     }
+            // }
 
+            // METHOD 2
+            /////////////
+            // let index = returnComputerIndex(col);
+            // let removed = computerArray.splice(index, index);
+            // console.log(computerArray);
+            // console.log(removed);
+
+            // Current Bug Problem:
+            /////////////////////////
+            // When using splice, it collapses the array objects above the selection
+            // aswell, can't find a fix at the moment
+            
             $(row).remove();
-            console.log(computerArray)
+            loadTable();
         }
     });
 
-    // Room Removal // NEEDS WORK
-    // CODE HERE:
+    // Room Removal // Needs work
     $('#btnRoomRemove').click(function () {
         let tempTxt = "#btn" + roomSelection;
         console.log(tempTxt);
-        
+
         // First, empty computer array of any computers in that room
         for (i = 0; i < computerArray.length; i++) {
             if (computerArray[i].roomid == roomSelection) {
-                console.log("Would remove:");
-                console.log(computerArray[i]);
+                computerArray.splice(i, i);
             }
         }
+
+        $(tempTxt).remove();
+        loadTable();
 
         // Second, remove room that has no computers in it
     });
