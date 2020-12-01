@@ -1,180 +1,344 @@
 var roomArray = new Array();
 var computerArray = new Array();
-var roomSel;
+var roomSelection;
 
 //////////////////////////// JAVASCRIPT ////////////////////////////
 
-// Random number generator
-function RandomNum() {
-    var RandomNum = Math.random();
-    var RefinedNum = Math.round(RandomNum * 10000);
-    return RefinedNum;
-}
-
-// Add new room
-function addNewRoom(id, name) {
+// Add room
+function addNewRoom(_name) {
     var newRoom = {
-        id: id,
-        name: name,
+        name: _name,
     }
-
     roomArray.push(newRoom);
-    $("#listBtns").append("<button id=\"btn" + id + "\" class=\"btn-info\" style=\"margin: 3px;\">" + name + "</button>");
 }
 
-// Add new computer
-function addNewPC(id, status, notes, roomid) {
+// Add computer
+function addNewPC(_id, _status, _notes, _roomName) {
     var newPC = {
-        id: id,
-        status: status,
-        notes: notes,
-        roomid: roomid,
+        id: _id,
+        status: _status,
+        notes: _notes,
+        roomName: _roomName,
     }
 
     computerArray.push(newPC);
 }
 
+// Update room
+function updateRoom(_search, _newName) {
+    for (i = 0; i < roomArray.length; i++) {
+        if (roomArray[i].name == _search) {
+
+            // Update computers in rooms
+            for (j = 0; j < computerArray.length; j++) {
+                if (computerArray[j].roomName == _search) {
+                    computerArray[j].roomName = _newName;
+                }
+            }
+
+            // Assign new name
+            roomArray[i].name = _newName;
+
+            // Set new values
+            let searchid = "#btn" + _search;
+            let newid = 'btn' + _newName;
+            $(searchid).attr('id', newid);
+            $(searchid).html(_newName);
+
+            // Reload table
+            loadRooms();
+            { break }
+        }
+    }
+}
+
 // Get index of room
-function returnRoomIndex(name) {
+function returnRoomIndex(_search) {
     for (var i = 0; i < roomArray.length; i++) {
-        if (name == roomArray[i].name) {
+        if (roomArray[i].name == _search) {
             return i;
         }
     }
 }
 
-// Load table
-function loadTable() {
-    $("#tblComputer").empty();
-    for (i = 0; i < computerArray.length; i++) {
-        if (computerArray[i].roomid == roomSel) {
-            addToTable(computerArray[i].id, computerArray[i].status, computerArray[i].notes)
+// Get index of computer
+function returnComputerIndex(_search) {
+    for (var i = 0; i < computerArray.length; i++) {
+        if (computerArray[i].id == _search) {
+            return i;
         }
     }
 }
 
-// Add to a table
-function addToTable(entry1, entry2, entry3) {
-    $("#tblComputer").append("<tr><td>" + entry1 + "</td><td>"
-        + entry2 + "</td><td>" + entry3 + "</td></tr>");
+// Load room table
+function loadRooms() {
+    $('#tblRoom').empty();
+    for (i = 0; i < roomArray.length; i++) {
+        addToRoomTable(roomArray[i].name);
+    }
+}
+
+// Load computer table
+function loadComputers() {
+    $('#tblComputer').empty();
+    for (i = 0; i < computerArray.length; i++) {
+        if (computerArray[i].roomName == roomSelection) {
+            addToComputerTable(computerArray[i].id, computerArray[i].status, computerArray[i].notes)
+        }
+    }
+}
+
+// Add to computer table
+function addToComputerTable(_id, _status, _notes) {
+    $('#tblComputer').append('<tr id=' + _id + '><td>' + _id + '</td><td>' + _status + '</td><td>' + _notes + '</td><td>'
+        + '<button class=\'btn btn-warning\'>Edit</button>'
+        + '<button  class=\'btn btn-danger\'>Remove</button>' + '</td></tr>');
+}
+
+// Add to room table
+function addToRoomTable(_roomName) {
+    $('#tblRoom').append('<button id=\'btn' + _roomName + '\' class=\'btn-info\' style=\'margin: 3px;\'>' + _roomName + '</button>')
 }
 
 // Click event for testing
-function clickElement(element) {
+function clickElement(_element) {
     try {
-        element.trigger("click");
+        _element.trigger('click');
     } catch (err) {
-        var event = new MouseEvent("click", { view: window, cancelable: true, bubbles: true });
-        element.dispatchEvent(event);
+        var event = new MouseEvent('click', { view: window, cancelable: true, bubbles: true });
+        _element.dispatchEvent(event);
     }
 }
+
+// Random number generator
+function RandomNum() {
+    var RandomNum = Math.random();
+    var num = Math.round(RandomNum * 10000);
+    return num;
+}
+
+// Clean forms
+function nullify(_boolean) {    
+    $('#txtRoomUpdate').attr('disabled', true);
+    $('#btnComputerAdd').attr('disabled', true);
+    $('#txtRoom').val(null);
+    $('#txtRoomUpdate').val(null);
+    $('#txtComputerID').val(null);
+    $('#txtComputerNotes').val(null);
+    if (_boolean == true) {
+        $('#txtRoomSel').html(null);
+    }
+}
+
+/*
+function removeComputer(row, col) {
+    for (i = 0; i < computerArray.length; i++) {
+        if (computerArray[i].id == col) {
+            computerArray.splice(i, i);
+            { break }
+        }
+    }
+    $(row).remove();
+}
+
+function arrayRemove(arr, value) {
+    return arr.filter(function (ele) {
+        return ele != value;
+    });
+}
+*/
 
 ////////////////////////////// JQUERY //////////////////////////////
 
 $(document).ready(function () {
 
     // Add a room
-    $("#btnAddRoom").click(function () {
-        let roomID = computerArray.length;
-        let roomName = $("#txtRoom").val();
+    $('#btnRoomAdd').click(function () {
+        let roomName = $('#txtRoom').val();
+        let roomID;
         let invalid = false;
 
-        if (roomName == "") {
+        if (roomName == '') {
             roomName = RandomNum();
-            addNewRoom(roomID, roomName);
-            $("#txtRoom").val("");
+            roomID = roomName;
+            addNewRoom(roomName);
         } else {
-            // Valid entry check
+            // Validity check
             for (i = 0; i < roomArray.length; i++) {
                 if (roomArray[i].name == roomName) {
                     invalid = true;
-                    $("#txtRoom").val("");
                     { break }
                 }
             }
-
-            // Valid entry
             if (invalid == false) {
-                addNewRoom(roomID, roomName);
-                $("#txtRoom").val("");
+                roomID = RandomNum();
+                addNewRoom(roomName);
             }
         }
+
+        nullify(true);
+        loadRooms();
     });
 
     // Add a computer
-    $("#btnAddComputer").click(function () {
-        let tempID = $("#comInputID").val();
-        let tempStatus = $("#comInputStatus").val();
-        let tempNotes = $("#comInputNotes").val();
-        let tempRoomID = roomSel;
+    $('#btnComputerAdd').click(function () {
+        let tempID = $('#txtComputerID').val();
+        let tempStatus = $('#txtComputerStatus').val();
+        let tempNotes = $('#txtComputerNotes').val();
+        let tempRoomID = roomSelection;
+        let invalid = false;
 
-        if (tempID == "") { tempID = RandomNum(); }
+        if (tempID == '') {
+            tempID = RandomNum();
+            addNewPC(tempID, tempStatus, tempNotes, tempRoomID);
+            $('#comInputID').val('');
+        } else {
+            // Validity check
+            for (i = 0; i < computerArray.length; i++) {
+                if (computerArray[i].id == tempID) {
+                    invalid = true;
+                    $('#comInputID').val('');
+                    { break }
+                }
+            }
+            if (invalid == false) {
+                addNewPC(tempID, tempStatus, tempNotes, tempRoomID);
+                $('#comInputID').val('');
+            }
+        }
 
-        // Add a check loop for duplicate IDs here... 
-        // ...
-
-        addNewPC(tempID, tempStatus, tempNotes, tempRoomID);
-
-        // Populate table
-        loadTable();
+        nullify(false);        
+        loadComputers();
     });
 
     // Room selection 
-    $(document).on("click", ".btn-info", function () {
-        let txtTemp = ($(this).text());
-        roomSel = returnRoomIndex(txtTemp);
-        $("#btnAddComputer").prop("disabled", false);
+    $(document).on('click', '.btn-info', function () {
+        roomSelection = ($(this).text());
+        let tempIndex = returnRoomIndex(roomSelection);
+        $('#btnComputerAdd').prop('disabled', false);
+        $('#btnRoomRemove').prop('disabled', false);
+        $('#txtRoomUpdate').attr('disabled', false);
 
         // Tell user which room is selected
-        $("#txtRoomSel1").html("Selected: " + txtTemp + ", Index No. " + roomSel);
-        $("#txtRoomSel2").html("Selected: " + txtTemp + ", Index No. " + roomSel);
+        $('#txtRoomSel').html('Selected: ' + roomSelection + ', Index No. ' + tempIndex);
 
         // Populate table
-        loadTable();
+        loadComputers();
     });
 
-    // $(window).ready(function () {} );
-    
+    // Room update
+    $('#btnRoomUpdate').click(function () {
+        let text = $('#txtRoomUpdate').val();
+        updateRoom(roomSelection, text);
+        nullify(true);
+    });
+
+    // Computer removal // DELAYED
+    $(document).on('click', '.btn-danger', function () {
+        // Clarifies to only activate within the table
+        if ($(this).text() == "Remove") {
+            let col = ($(this).closest('tr').find('td:eq(0)').text());
+            let row = "#" + ($(this).closest('tr').attr('id'));
+            console.log(col);
+
+            // METHOD 1
+            /////////////
+            // for (i = 0; i < computerArray.length; i++) {
+            //     if (computerArray[i].id == col) {
+            //         computerArray.splice(i, i);
+            //     }
+            // }
+
+            // METHOD 2
+            /////////////
+            // let index = returnComputerIndex(col);
+            // let removed = computerArray.splice(index, index);
+            // console.log(computerArray);
+            // console.log(removed);
+
+            // Current Bug Problem:
+            /////////////////////////
+            // When using splice, it collapses the array objects above the selection
+            // aswell, can't find a fix at the moment
+
+            $(row).remove();
+            loadComputers();
+        }
+    });
+
+    // Room Removal // DELAYED
+    $('#btnRoomRemove').click(function () {
+        let tempTxt = "#btn" + roomSelection;
+        console.log(tempTxt);
+
+        // First, empty computer array of any computers in that room
+        for (i = 0; i < computerArray.length; i++) {
+            if (computerArray[i].roomid == roomSelection) {
+                computerArray.splice(i, i);
+            }
+        }
+
+        $(tempTxt).remove();
+        loadComputers();
+
+        // Second, remove room that has no computers in it
+    });
+
+    $('#btnDeselect').click(function () {
+        nullify(true);
+    });
+
+    // $(window).ready(function () {});
+
 });
 
 /////////////////////// MOCHA & CHAI TESTING ///////////////////////
 
-suite("Testing Suite", function () {
+suite('Testing Suite', function () {
 
     setup(function () {
-        this.roomName = "Room 4";
-        this.roomID = computerArray.length;
-        this.pcID = "D29PC";
-        this.pcStatus = "Working";
-        this.notes = "N/a"
-        this.pcRoomID = 0;
+        this.roomName = 'COMP3006';
+        this.compID = 'D29PC';
+        this.compStatus = 'Working';
+        this.compNotes = 'N/a'
+        this.compRoomName = 0;
     });
 
     teardown(function () {
-        $("#listBtns").empty();
+        $('#roomList').empty();
         roomArray = [];
-        $("#tblComputer").empty();
+        $('#tblComputer').empty();
         computerArray = [];
     });
 
-    test("Add a room", function () {
-        addNewRoom(this.roomID, this.roomName);
+    test('Function Test: Add a room', function () {
+        addNewRoom(this.roomName);
+        let checker = roomArray[0].name;
 
-        /*
-        - Test UI, inoperable -
-        $("txtRoom").val(this.roomName); 
-        clickElement($("#btnAddRoom"));
-        */
-
-        let checker = $("#btn0").html();
-        chai.assert.equal(this.roomName, checker, "Cannot find expected Room value");
+        chai.assert.equal(checker, "COMP3006", 'Cannot find expected Room value:');
     });
 
-    test("Add a computer", function () {
-        addNewRoom(this.roomID, this.roomName);
-        addNewPC(this.pcID, this.pcStatus, this.pcNotes, this.pcRoomID);
+    test('Function Test: Add a computer', function () {
+        addNewRoom(this.roomName);
+        addNewPC(this.compID, this.compStatus, this.compNotes, this.compRoomName);
 
         let checker = computerArray[0].id;
-        chai.assert.equal(this.pcID, checker, "Cannot find expected PC ID");
+        chai.assert.equal(this.compID, checker, 'Cannot find expected PC ID');
     });
+
+    test('UI Test: Add a room', function () {
+        // Code goes here
+        /*
+        // - Test UI, inoperable -
+        $('#txtRoom').val(this.roomName);
+        clickElement($('#btnRoomAdd'));
+        */  
+
+        assert.equal("actual", "expected", "[Test not set up]");
+    })
+
+    test('UI Test: Add a computer', function () {
+        // Code goes here
+        assert.equal("actual", "expected", "[Test not set up]");
+    })
 });

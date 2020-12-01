@@ -1,0 +1,23 @@
+#table-overflow {
+    overflow: auto;
+    max-height: 420px; 
+}
+
+#table-overflow-2 {
+    overflow: auto; 
+    max-height:130px;
+    height: 140px;
+}
+
+#padded-box {
+    padding: 20px
+}
+
+#computer-form-box {
+    background-color: rgb(223, 223, 223); 
+    padding: 10px
+}
+
+.red-border {
+    border-style: solid 2px, red;
+}
