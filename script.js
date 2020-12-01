@@ -1,5 +1,6 @@
 var roomArray = new Array();
 var computerArray = new Array();
+var testArray = new Array();
 var roomSelection;
 
 //////////////////////////// JAVASCRIPT ////////////////////////////
@@ -34,7 +35,7 @@ function returnRoomIndex(search) {
     }
 }
 
-// GEt index of computer
+// Get index of computer
 function returnComputerIndex(search) {
     for (var i = 0; i < computerArray.length; i++) {
         if (computerArray[i].id == search) {
@@ -225,7 +226,23 @@ $(document).ready(function () {
         // Second, remove room that has no computers in it
     });
 
-    // $(window).ready(function () {});
+    $(window).ready(function () {
+        var tempRoom = new Array();
+        var newPC = {
+            id: 1,
+            status: "Working",
+            notes: "Nice",
+        }
+        var oldpc = {
+            id: 2,
+            status: "Working",
+            notes: "Nice",
+        }
+        tempRoom.push(newPC);
+        tempRoom.push(oldpc);
+        roomArray.push(tempRoom);
+        console.log(roomArray);
+    });
 
 });
 
