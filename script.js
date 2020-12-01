@@ -4,37 +4,56 @@ var roomSelection;
 
 //////////////////////////// JAVASCRIPT ////////////////////////////
 
-// Add new room
-function addNewRoom(_id) {
+// Add room
+function addNewRoom(_name) {
     var newRoom = {
-        id: _id,
+        name: _name,
     }
     roomArray.push(newRoom);
-    $('#roomList').append('<button id=\'btn' + _id + '\' class=\'btn-info\' style=\'margin: 3px;\'>' + _id + '</button>');
 }
 
-// Add new computer
-function addNewPC(_id, _status, _notes, _roomid) {
+// Add computer
+function addNewPC(_id, _status, _notes, _roomName) {
     var newPC = {
         id: _id,
         status: _status,
         notes: _notes,
-        roomid: _roomid,
+        roomName: _roomName,
     }
 
     computerArray.push(newPC);
 }
 
+// Update room
+function updateRoom(_search, _newRoomName) {
+    for (i = 0; i < roomArray.length; i++) {
+        if (roomArray[i].name == _search) {
+            // Assign new name
+            roomArray[i].name = _newRoomName;
+
+            // Set new values
+            let searchid = "#btn" + _search;
+            let newid = 'btn' + _newRoomName;
+            $(searchID).attr('id', newid);
+            $(searchid).html(_newRoomName);
+
+            // Reload table
+            loadRooms();
+            { break }
+        }
+    }
+}
+
 // Get index of room
 function returnRoomIndex(search) {
     for (var i = 0; i < roomArray.length; i++) {
-        if (roomArray[i].id == search) {
+        if (roomArray[i].name == search) {
             return i;
         }
     }
 }
 
-// GEt index of computer
+// Get index of computer
 function returnComputerIndex(search) {
     for (var i = 0; i < computerArray.length; i++) {
         if (computerArray[i].id == search) {
@@ -43,11 +62,18 @@ function returnComputerIndex(search) {
     }
 }
 
+function loadRooms() {
+    $('#tblRoom').empty();
+    for (i = 0; i < roomArray.length; i++) {
+        addToRoomTable(roomArray[i].name);
+    }
+}
+
 // Load table
 function loadTable() {
     $('#tblComputer').empty();
     for (i = 0; i < computerArray.length; i++) {
-        if (computerArray[i].roomid == roomSelection) {
+        if (computerArray[i].roomName == roomSelection) {
             addToTable(computerArray[i].id, computerArray[i].status, computerArray[i].notes)
         }
     }
@@ -58,6 +84,10 @@ function addToTable(id, status, notes) {
     $('#tblComputer').append('<tr id=' + id + '><td>' + id + '</td><td>' + status + '</td><td>' + notes + '</td><td>'
         + '<button class=\'btn btn-warning\'>Edit</button>'
         + '<button  class=\'btn btn-danger\'>Remove</button>' + '</td></tr>');
+}
+
+function addToRoomTable(_roomName) {
+    $('#tblRoom').append('<tr><td><button id=\'btn' + _roomName + '\' class=\'btn-info\' style=\'margin: 3px;\'>' + _roomName + '</button></td></tr>')
 }
 
 // Click event for testing
@@ -77,10 +107,7 @@ function RandomNum() {
     return RefinedNum;
 }
 
-function removeRoom() {
-
-}
-
+/*
 function removeComputer(row, col) {
     for (i = 0; i < computerArray.length; i++) {
         if (computerArray[i].id == col) {
@@ -96,6 +123,7 @@ function arrayRemove(arr, value) {
         return ele != value;
     });
 }
+*/
 
 ////////////////////////////// JQUERY //////////////////////////////
 
@@ -127,6 +155,8 @@ $(document).ready(function () {
                 $('#txtRoom').val('');
             }
         }
+
+        loadRooms();
     });
 
     // Add a computer
@@ -201,7 +231,7 @@ $(document).ready(function () {
             /////////////////////////
             // When using splice, it collapses the array objects above the selection
             // aswell, can't find a fix at the moment
-            
+
             $(row).remove();
             loadTable();
         }
