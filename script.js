@@ -30,7 +30,7 @@ function updateRoom(_search, _newName) {
         if (roomArray[i].name == _search) {
 
             // Update computers in rooms
-            for(j = 0; j < computerArray.length; j++) {
+            for (j = 0; j < computerArray.length; j++) {
                 if (computerArray[j].roomName == _search) {
                     computerArray[j].roomName = _newName;
                 }
@@ -117,6 +117,19 @@ function RandomNum() {
     return num;
 }
 
+// Clean forms
+function nullify(_boolean) {    
+    $('#txtRoomUpdate').attr('disabled', true);
+    $('#btnComputerAdd').attr('disabled', true);
+    $('#txtRoom').val(null);
+    $('#txtRoomUpdate').val(null);
+    $('#txtComputerID').val(null);
+    $('#txtComputerNotes').val(null);
+    if (_boolean == true) {
+        $('#txtRoomSel').html(null);
+    }
+}
+
 /*
 function removeComputer(row, col) {
     for (i = 0; i < computerArray.length; i++) {
@@ -149,23 +162,21 @@ $(document).ready(function () {
             roomName = RandomNum();
             roomID = roomName;
             addNewRoom(roomName);
-            $('#txtRoom').val('');
         } else {
             // Validity check
             for (i = 0; i < roomArray.length; i++) {
                 if (roomArray[i].name == roomName) {
                     invalid = true;
-                    $('#txtRoom').val('');
                     { break }
                 }
             }
             if (invalid == false) {
                 roomID = RandomNum();
                 addNewRoom(roomName);
-                $('#txtRoom').val('');
             }
         }
 
+        nullify(true);
         loadRooms();
     });
 
@@ -196,7 +207,7 @@ $(document).ready(function () {
             }
         }
 
-        // Reload table
+        nullify(false);        
         loadComputers();
     });
 
@@ -219,6 +230,7 @@ $(document).ready(function () {
     $('#btnRoomUpdate').click(function () {
         let text = $('#txtRoomUpdate').val();
         updateRoom(roomSelection, text);
+        nullify(true);
     });
 
     // Computer removal // DELAYED
@@ -272,6 +284,10 @@ $(document).ready(function () {
         // Second, remove room that has no computers in it
     });
 
+    $('#btnDeselect').click(function () {
+        nullify(true);
+    });
+
     // $(window).ready(function () {});
 
 });
@@ -281,11 +297,11 @@ $(document).ready(function () {
 suite('Testing Suite', function () {
 
     setup(function () {
-        this.roomID = "Room 4";
-        this.pcID = 'D29PC';
-        this.pcStatus = 'Working';
-        this.notes = 'N/a'
-        this.pcRoomID = 0;
+        this.roomName = 'COMP3006';
+        this.compID = 'D29PC';
+        this.compStatus = 'Working';
+        this.compNotes = 'N/a'
+        this.compRoomName = 0;
     });
 
     teardown(function () {
@@ -295,24 +311,34 @@ suite('Testing Suite', function () {
         computerArray = [];
     });
 
-    test('Add a room', function () {
-        addNewRoom(this.roomID);
+    test('Function Test: Add a room', function () {
+        addNewRoom(this.roomName);
+        let checker = roomArray[0].name;
 
-        /*
-        - Test UI, inoperable -
-        $('txtRoom').val(this.roomName); 
-        clickElement($('#btnAddRoom'));
-        */
-
-        let checker = $('#btn0').html();
-        chai.assert.equal(this.roomName, checker, 'Cannot find expected Room value');
+        chai.assert.equal(checker, "COMP3006", 'Cannot find expected Room value:');
     });
 
-    test('Add a computer', function () {
-        addNewRoom(this.roomID);
-        addNewPC(this.pcID, this.pcStatus, this.pcNotes, this.pcRoomID);
+    test('Function Test: Add a computer', function () {
+        addNewRoom(this.roomName);
+        addNewPC(this.compID, this.compStatus, this.compNotes, this.compRoomName);
 
         let checker = computerArray[0].id;
-        chai.assert.equal(this.pcID, checker, 'Cannot find expected PC ID');
+        chai.assert.equal(this.compID, checker, 'Cannot find expected PC ID');
     });
+
+    test('UI Test: Add a room', function () {
+        // Code goes here
+        /*
+        // - Test UI, inoperable -
+        $('#txtRoom').val(this.roomName);
+        clickElement($('#btnRoomAdd'));
+        */  
+
+        assert.equal("actual", "expected", "[Test not set up]");
+    })
+
+    test('UI Test: Add a computer', function () {
+        // Code goes here
+        assert.equal("actual", "expected", "[Test not set up]");
+    })
 });
