@@ -25,17 +25,25 @@ function addNewPC(_id, _status, _notes, _roomName) {
 }
 
 // Update room
-function updateRoom(_search, _newRoomName) {
+function updateRoom(_search, _newName) {
     for (i = 0; i < roomArray.length; i++) {
         if (roomArray[i].name == _search) {
+
+            // Update computers in rooms
+            for(j = 0; j < computerArray.length; j++) {
+                if (computerArray[j].roomName == _search) {
+                    computerArray[j].roomName = _newName;
+                }
+            }
+
             // Assign new name
-            roomArray[i].name = _newRoomName;
+            roomArray[i].name = _newName;
 
             // Set new values
             let searchid = "#btn" + _search;
-            let newid = 'btn' + _newRoomName;
-            $(searchID).attr('id', newid);
-            $(searchid).html(_newRoomName);
+            let newid = 'btn' + _newName;
+            $(searchid).attr('id', newid);
+            $(searchid).html(_newName);
 
             // Reload table
             loadRooms();
@@ -45,23 +53,24 @@ function updateRoom(_search, _newRoomName) {
 }
 
 // Get index of room
-function returnRoomIndex(search) {
+function returnRoomIndex(_search) {
     for (var i = 0; i < roomArray.length; i++) {
-        if (roomArray[i].name == search) {
+        if (roomArray[i].name == _search) {
             return i;
         }
     }
 }
 
 // Get index of computer
-function returnComputerIndex(search) {
+function returnComputerIndex(_search) {
     for (var i = 0; i < computerArray.length; i++) {
-        if (computerArray[i].id == search) {
+        if (computerArray[i].id == _search) {
             return i;
         }
     }
 }
 
+// Load room table
 function loadRooms() {
     $('#tblRoom').empty();
     for (i = 0; i < roomArray.length; i++) {
@@ -69,42 +78,43 @@ function loadRooms() {
     }
 }
 
-// Load table
-function loadTable() {
+// Load computer table
+function loadComputers() {
     $('#tblComputer').empty();
     for (i = 0; i < computerArray.length; i++) {
         if (computerArray[i].roomName == roomSelection) {
-            addToTable(computerArray[i].id, computerArray[i].status, computerArray[i].notes)
+            addToComputerTable(computerArray[i].id, computerArray[i].status, computerArray[i].notes)
         }
     }
 }
 
-// Add to a table
-function addToTable(id, status, notes) {
-    $('#tblComputer').append('<tr id=' + id + '><td>' + id + '</td><td>' + status + '</td><td>' + notes + '</td><td>'
+// Add to computer table
+function addToComputerTable(_id, _status, _notes) {
+    $('#tblComputer').append('<tr id=' + _id + '><td>' + _id + '</td><td>' + _status + '</td><td>' + _notes + '</td><td>'
         + '<button class=\'btn btn-warning\'>Edit</button>'
         + '<button  class=\'btn btn-danger\'>Remove</button>' + '</td></tr>');
 }
 
+// Add to room table
 function addToRoomTable(_roomName) {
-    $('#tblRoom').append('<tr><td><button id=\'btn' + _roomName + '\' class=\'btn-info\' style=\'margin: 3px;\'>' + _roomName + '</button></td></tr>')
+    $('#tblRoom').append('<button id=\'btn' + _roomName + '\' class=\'btn-info\' style=\'margin: 3px;\'>' + _roomName + '</button>')
 }
 
 // Click event for testing
-function clickElement(element) {
+function clickElement(_element) {
     try {
-        element.trigger('click');
+        _element.trigger('click');
     } catch (err) {
         var event = new MouseEvent('click', { view: window, cancelable: true, bubbles: true });
-        element.dispatchEvent(event);
+        _element.dispatchEvent(event);
     }
 }
 
 // Random number generator
 function RandomNum() {
     var RandomNum = Math.random();
-    var RefinedNum = Math.round(RandomNum * 10000);
-    return RefinedNum;
+    var num = Math.round(RandomNum * 10000);
+    return num;
 }
 
 /*
@@ -187,7 +197,7 @@ $(document).ready(function () {
         }
 
         // Reload table
-        loadTable();
+        loadComputers();
     });
 
     // Room selection 
@@ -196,15 +206,22 @@ $(document).ready(function () {
         let tempIndex = returnRoomIndex(roomSelection);
         $('#btnComputerAdd').prop('disabled', false);
         $('#btnRoomRemove').prop('disabled', false);
+        $('#txtRoomUpdate').attr('disabled', false);
 
         // Tell user which room is selected
         $('#txtRoomSel').html('Selected: ' + roomSelection + ', Index No. ' + tempIndex);
 
         // Populate table
-        loadTable();
+        loadComputers();
     });
 
-    // Computer removal // Needs work
+    // Room update
+    $('#btnRoomUpdate').click(function () {
+        let text = $('#txtRoomUpdate').val();
+        updateRoom(roomSelection, text);
+    });
+
+    // Computer removal // DELAYED
     $(document).on('click', '.btn-danger', function () {
         // Clarifies to only activate within the table
         if ($(this).text() == "Remove") {
@@ -233,11 +250,11 @@ $(document).ready(function () {
             // aswell, can't find a fix at the moment
 
             $(row).remove();
-            loadTable();
+            loadComputers();
         }
     });
 
-    // Room Removal // Needs work
+    // Room Removal // DELAYED
     $('#btnRoomRemove').click(function () {
         let tempTxt = "#btn" + roomSelection;
         console.log(tempTxt);
@@ -250,7 +267,7 @@ $(document).ready(function () {
         }
 
         $(tempTxt).remove();
-        loadTable();
+        loadComputers();
 
         // Second, remove room that has no computers in it
     });

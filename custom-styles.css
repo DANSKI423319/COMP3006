@@ -3,10 +3,10 @@
     max-height: 420px; 
 }
 
-#roomList {
+#table-overflow-2 {
     overflow: auto; 
-    max-height:120px;
-    height: 150px;
+    max-height:130px;
+    height: 140px;
 }
 
 #padded-box {

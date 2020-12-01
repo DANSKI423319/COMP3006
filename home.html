@@ -21,7 +21,8 @@
             <h5>Controller</h5>
             <div class="form-row">
                 <div class="col">
-                    <input id="txtRoom" type="text" class="form-control" placeholder="Leave blank for random" maxlength="10" />
+                    <input id="txtRoom" type="text" class="form-control" placeholder="Leave blank for random"
+                        maxlength="10" />
                 </div>
                 <div class="col">
                     <button id="btnRoomAdd" class="btn btn-primary form-control">Add Room</button>
@@ -42,18 +43,19 @@
             </div>
             <br />
             <h5>Rooms</h5>
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Rooms</th>
-                    </tr>
-                </thead>
-                <tbody id="tblRoom">
-                    <tr>
-                    </tr>
-                </tbody>
-            </table>
-            <div id="roomList" class="btn-group-horizontal"></div><br>
+            <div id="table-overflow-2">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Rooms</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="tblRoom">
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <button id="btnRoomRemove" class="btn btn-danger border border-warning" disabled="true">Remove Room</button>
         </div>
 
