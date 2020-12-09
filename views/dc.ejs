@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Computers-Dev</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="custom-styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+</head>
+
+<body style="margin: 20px">
+    <h3>Desk Manager</h3>
+    <h4 class="text-muted">Status Checker</h4>
+    <br />
+    <div class="row">
+        <!-- COMPUTER CONTROLLER -->
+        <div id="padded-box" class="col-sm-6 border border-secondary rounded">
+            <div id="formBox">
+                <h5>Computer Room</h5>
+
+                <div id="computer-form-box" class="border border-secondary rounded;">
+                    <form method="post" action="/add">
+                        <div class="form-group">
+                            <label for="pcid">ID (10 characters)</label>
+                            <input type="text" name="pcid" class="form-control" maxlength="10"
+                                placeholder="Computer ID..." />
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select name="status" class="form-control">
+                                <option>Working</option>
+                                <option>Not working</option>
+                                <option>Scheduled for maintenance</option>
+                                <option>N/A</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <input type="text" name="notes" class="form-control" placeholder="Notes..." />
+                        </div>
+                        <div class="form-group">
+                            <label for="roomid">Room ID</label>
+                            <input type="number" id="roomid" class="form-control" placeholder="Room ID..." />
+                        </div>
+                        <input type="submit" id="btnComputerAdd" class="btn btn-primary" value="Add Computer" />
+                    </form>
+                </div>
+            </div>
+
+            <div id="computer-form-box">
+                <div id="formBox">
+                    <form method="post" action="/dcfilter">
+                        <div class="form-group">
+                            <label for="roomid">Enter Filter</label>
+                            <input type="text" name="roomid" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" />
+                            <a href="/dc">Remove Filter</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- COMPUTER TABLE-->
+    <div id="padded-box" class="col-sm-6 border border-secondary rounded">
+        <div id="table-overflow">
+            <h6 id="txtRoomSel" style="color: green"></h6>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Computer ID</th>
+                        <th>Computer status</th>
+                        <th>Computer notes</th>
+                        <th>Room ID</th>
+                    </tr>
+                </thead>
+                <tbody id="tblComputer">
+                    <% for (i = 0; i < computers.length; i++) { %>
+                    <tr>
+                        <td><%= computers[i].pcid %></td>
+                        <td><%= computers[i].status %></td>
+                        <td><%= computers[i].notes %></td>
+                        <td><%= computers[i].roomid %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
