@@ -1,27 +1,28 @@
 let models = require("./computer-schema");
-let mongoose = require("mongoose");
 
+// Filters database output by roomid (optional)
 async function getComputers(roomid) {
     let filter = {};
     if (roomid) {
         filter.roomid = roomid;
     }
-    console.log("Loaded computers")
+
     return await models.Computer.find(filter);
 }
 
-async function addComputer() {
-
+// Add a computer to the database
+function addComputer(_pcid, _status, _notes, _roomid) {
     let newpc = {
-        pcid: 12,
-        status: "Working",
-        notes: "Last words...",
-        roomid: 13
+        pcid: _pcid,
+        status: _status,
+        notes: _notes,
+        roomid: parseInt(_roomid)
     }
 
     models.Computer.collection.insertOne(newpc);
-    console.log("SOMETHING");
+    console.log("Ping from db");
 }
 
+// Accessors...
 module.exports.getComputers = getComputers;
 module.exports.addComputer = addComputer;
