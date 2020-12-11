@@ -25,8 +25,10 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/olddc", function (request, response) { response.render("olddc"); })
 app.get("/pcs", routes.allComputers);
 app.get("/dc", routes.listComputers);
+
 app.post("/dcfilter", routes.listComputers);
-app.post("/add", routes.addTest);
+app.post("/add", routes.insertComputer);
+app.post("/update", routes.updateComputer);
 
 app.listen(port, function () {
     console.log("Listening on " + port);

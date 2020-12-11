@@ -12,29 +12,29 @@
     <h3>Desk Manager</h3>
     <h4 class="text-muted">Status Checker</h4>
     <br />
-    <div class="row">
 
+    <div class="row">
       <!-- COMPUTER CONTROLLER -->
       <div id="padded-box" class="col-sm-4 border border-secondary rounded">
         <div id="formBox">
-          <h5>Computer Room</h5>
+          <h5>Add Computer</h5>
 
-          <!-- Add Room Form -->
+          <!-- Add Computer Form -->
           <div id="computer-form-box" class="border border-secondary rounded;">
             <form method="post" action="/add">
               <div class="form-group">
-                <label for="pcidInput">ID (10 characters)</label>
+                <label for="addName">Name</label>
                 <input
                   type="text"
-                  name="pcidInput"
+                  name="addName"
                   class="form-control"
                   maxlength="10"
                   placeholder="Type here..."
                 />
               </div>
               <div class="form-group">
-                <label for="statusInput">Status</label>
-                <select name="statusInput" class="form-control">
+                <label for="addStatus">Status</label>
+                <select name="addStatus" class="form-control">
                   <option>Working</option>
                   <option>Not working</option>
                   <option>Scheduled for maintenance</option>
@@ -42,19 +42,19 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="notesInput">Notes</label>
+                <label for="addNotes">Notes</label>
                 <input
                   type="text"
-                  name="notesInput"
+                  name="addNotes"
                   class="form-control"
                   placeholder="Type here..."
                 />
               </div>
               <div class="form-group">
-                <label for="roomidInput">Room ID</label>
+                <label for="addRoom">Room</label>
                 <input
                   type="number"
-                  name="roomidInput"
+                  name="addRoom"
                   class="form-control"
                   placeholder="Type here..."
                 />
@@ -70,53 +70,166 @@
         </div>
 
         <!-- Filter Room Form -->
-          <div id="computer-form-box">
-            <div id="formBox">
-              <form method="post" action="/dcfilter">
-                <div class="form-group">
-                  <label for="roomid">Room ID Filter</label>
-                  <input
-                    type="text"
-                    name="roomidFilter"
-                    class="form-control"
-                    placeholder="Type here..."
-                  />
-                </div>
-                <div class="form-group">
-                  <input type="submit" class="btn btn-primary" />
-                  <a href="/dc">Remove Filter</a>
-                </div>
-              </form>
-            </div>
+        <div id="computer-form-box">
+          <div id="formBox">
+            <form method="post" action="/dcfilter">
+              <div class="form-group">
+                <label for="roomFilter">Room ID Filter</label>
+                <input
+                  type="text"
+                  name="roomFilter"
+                  class="form-control"
+                  placeholder="Type here..."
+                />
+              </div>
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary" />
+                <a href="/dc">Remove Filter</a>
+              </div>
+            </form>
           </div>
+        </div>
       </div>
 
       <!-- COMPUTER TABLE -->
-      <div id="padded-box" class="col-sm-6 border border-secondary rounded">
+      <div id="padded-box" class="col-sm-4 border border-secondary rounded">
         <div id="table-overflow">
           <h6 id="txtRoomSel" style="color: green"></h6>
           <table class="table">
             <thead class="thead-dark">
               <tr>
                 <th>Computer ID</th>
-                <th>Computer status</th>
-                <th>Computer notes</th>
-                <th>Room ID</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Additional Information</th>
+                <th>Room</th>
+                <th>...</th>
               </tr>
             </thead>
-            <tbody id="tblComputer">
+            <tbody id="tblComputers">
               <% for (i = 0; i < computers.length; i++) { %>
               <tr>
-                <td><%= computers[i].pcid %></td>
-                <td><%= computers[i].status %></td>
-                <td><%= computers[i].notes %></td>
-                <td><%= computers[i].roomid %></td>
+                <td id="id"><%= computers[i]._id %></td>
+                <td id="name"><%= computers[i].name %></td>
+                <td id="status"><%= computers[i].status %></td>
+                <td id="notes"><%= computers[i].notes %></td>
+                <td id="roomid"><%= computers[i].room %></td>
+                <td><button class="getPC" method="post">Update</button></td>
               </tr>
               <% } %>
             </tbody>
           </table>
         </div>
       </div>
+
+      <div id="padded-box" class="col-sm-4 border border-secondary rounded">
+        <div id="formBox">
+          <h5>Update Computer</h5>
+
+          <!-- Update Room Form -->
+          <div id="computer-form-box" class="border border-secondary rounded;">
+            <form method="post" action="/update">
+              <div class="form-group">
+                <label for="searchId">Computer ID</label>
+                <input
+                  type="text"
+                  name="searchId"
+                  class="form-control"
+                  id="txtId"
+                />
+              </div>
+              <div class="form-group">
+                <label for="searchName">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="searchName"
+                  id="txtName"
+                />
+                <input
+                  type="text"
+                  name="updateName"
+                  class="form-control"
+                  maxlength="10"
+                  placeholder="New value..."
+                />
+              </div>
+              <div class="form-group">
+                <label for="searchStatus">Status</label>
+                <input
+                  type="text"
+                  id="txtStatus"
+                  class="form-control"
+                  disabled
+                />
+                <select name="updateStatus" class="form-control">
+                  <option>Working</option>
+                  <option>Not working</option>
+                  <option>Scheduled for maintenance</option>
+                  <option>N/A</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="searchNotes">Notes</label>
+                <input
+                  type="text"
+                  id="txtNotes"
+                  class="form-control"
+                  disabled
+                />
+                <input
+                  type="text"
+                  name="updateNotes"
+                  class="form-control"
+                  placeholder="New value..."
+                />
+              </div>
+              <div class="form-group">
+                <label for="searchRoom">Room</label>
+                <input
+                  type="number"
+                  id="txtRoomid"
+                  class="form-control"
+                  disabled
+                />
+                <input
+                  type="number"
+                  name="updateRoom"
+                  class="form-control"
+                  placeholder="New value..."
+                />
+              </div>
+              <input
+                type="submit"
+                id="btnComputerUpdate"
+                class="btn btn-warning"
+                value="Update"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".getPC").click(function () {
+          let row = $(this).closest("tr");
+          let id = row.find("#id").text();
+          let pcName = row.find("#name").text();
+          let pcStatus = row.find("#status").text();
+          let pcNotes = row.find("#notes").text();
+          let pcRoomID = row.find("#roomid").text();
+
+          $("#txtId").val(id);
+          $("#txtName").val(pcName);
+          $("#txtStatus").val(pcStatus);
+          $("#txtNotes").val(pcNotes);
+          $("#txtRoomid").val(pcRoomID);
+        });
+
+        $(window).ready(function () {});
+      });
+    </script>
   </body>
 </html>
