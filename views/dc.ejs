@@ -15,7 +15,7 @@
 
     <div class="row">
       <!-- COMPUTER CONTROLLER -->
-      <div id="padded-box" class="col-sm-4 border border-secondary rounded">
+      <div id="padded-box" class="col-sm-3 border border-secondary rounded">
         <div id="formBox">
           <h5>Add Computer</h5>
 
@@ -92,7 +92,7 @@
       </div>
 
       <!-- COMPUTER TABLE -->
-      <div id="padded-box" class="col-sm-4 border border-secondary rounded">
+      <div id="padded-box" class="col-sm-6 border border-secondary rounded">
         <div id="table-overflow">
           <h6 id="txtRoomSel" style="color: green"></h6>
           <table class="table">
@@ -113,7 +113,7 @@
                 <td id="name"><%= computers[i].name %></td>
                 <td id="status"><%= computers[i].status %></td>
                 <td id="notes"><%= computers[i].notes %></td>
-                <td id="roomid"><%= computers[i].room %></td>
+                <td id="room"><%= computers[i].room %></td>
                 <td><button class="getPC" method="post">Update</button></td>
               </tr>
               <% } %>
@@ -122,47 +122,49 @@
         </div>
       </div>
 
-      <div id="padded-box" class="col-sm-4 border border-secondary rounded">
+      <div id="padded-box" class="col-sm-3 border border-secondary rounded">
         <div id="formBox">
           <h5>Update Computer</h5>
 
           <!-- Update Room Form -->
           <div id="computer-form-box" class="border border-secondary rounded;">
-            <form method="post" action="/update">
+            <form method="post" action="/update" class="updateForm">
               <div class="form-group">
                 <label for="searchId">Computer ID</label>
                 <input
                   type="text"
+                  id="txtSearch"
                   name="searchId"
                   class="form-control"
-                  id="txtId"
+                  disabled
                 />
               </div>
               <div class="form-group">
                 <label for="searchName">Name</label>
                 <input
                   type="text"
-                  class="form-control"
+                  id="txtName1"
                   name="searchName"
-                  id="txtName"
+                  class="form-control border border-danger"
+                  title="Do not edit this field"
+                  disabled
                 />
                 <input
                   type="text"
+                  id="txtName2"
                   name="updateName"
-                  class="form-control"
-                  maxlength="10"
-                  placeholder="New value..."
+                  class="form-control border border-success"
+                  disabled
                 />
               </div>
               <div class="form-group">
-                <label for="searchStatus">Status</label>
-                <input
-                  type="text"
+                <label for="updateStatus">Status</label>
+                <select
                   id="txtStatus"
+                  name="updateStatus"
                   class="form-control"
                   disabled
-                />
-                <select name="updateStatus" class="form-control">
+                >
                   <option>Working</option>
                   <option>Not working</option>
                   <option>Scheduled for maintenance</option>
@@ -170,33 +172,23 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="searchNotes">Notes</label>
+                <label for="updateNotes">Notes</label>
                 <input
                   type="text"
                   id="txtNotes"
-                  class="form-control"
-                  disabled
-                />
-                <input
-                  type="text"
                   name="updateNotes"
                   class="form-control"
-                  placeholder="New value..."
+                  disabled
                 />
               </div>
               <div class="form-group">
-                <label for="searchRoom">Room</label>
+                <label for="updateRoom">Room</label>
                 <input
                   type="number"
-                  id="txtRoomid"
-                  class="form-control"
-                  disabled
-                />
-                <input
-                  type="number"
+                  id="txtRoom"
                   name="updateRoom"
                   class="form-control"
-                  placeholder="New value..."
+                  disabled
                 />
               </div>
               <input
@@ -207,28 +199,73 @@
               />
             </form>
           </div>
+          <p id="errorMsg" style="color: red;"></p>
         </div>
       </div>
     </div>
 
     <script>
+      ///// JAVASCRIPT /////
+
+      // Lock or Unlock update form
+      function blockType(bool) {
+        $("#txtId").attr("disabled", bool);
+        $("#txtName1").attr("disabled", bool);
+        $("#txtName2").attr("disabled", bool);
+        $("#txtStatus").attr("disabled", bool);
+        $("#txtNotes").attr("disabled", bool);
+        $("#txtRoom").attr("disabled", bool);
+      }
+
+      /////// JQUERY ///////
+
       $(document).ready(function () {
+
+        // Get PC information (update form)
         $(".getPC").click(function () {
           let row = $(this).closest("tr");
           let id = row.find("#id").text();
           let pcName = row.find("#name").text();
           let pcStatus = row.find("#status").text();
           let pcNotes = row.find("#notes").text();
-          let pcRoomID = row.find("#roomid").text();
+          let pcRoom = row.find("#room").text();
 
-          $("#txtId").val(id);
-          $("#txtName").val(pcName);
+          blockType(false);
+
+          $("#txtSearch").val(id);
+          $("#txtName1").val(pcName);
+          $("#txtName2").val(pcName);
           $("#txtStatus").val(pcStatus);
           $("#txtNotes").val(pcNotes);
-          $("#txtRoomid").val(pcRoomID);
+          $("#txtRoom").val(pcRoom);
         });
 
-        $(window).ready(function () {});
+        // Update form validation
+        $(".updateForm").submit(function (f) {
+          let name1 = $("#txtName1").val();
+          let name2 = $("#txtName2").val();
+          let notes = $("#txtNotes").val();
+          let room = $("txtRoom").val();
+
+          if (name1 == "") {
+            f.preventDefault();
+            $("#errorMsg").html("Please do note remove text in the red box")
+          } else if (name2 == "") {
+            f.preventDefault();
+            $("#errorMsg").html("Please enter a new value")
+          } else if (notes == "") {
+            $("#txtNotes").val("...")
+          } else if (room == "") {
+            $("#txtRoom").val("0");
+          } else {
+            $("#errorMsg").html(null);
+            $("#errorMsg").attr('hidden', 'true');
+          }
+        });
+      });
+
+      $(window).ready(function () {
+        // Nothing...
       });
     </script>
   </body>

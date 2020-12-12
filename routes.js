@@ -36,13 +36,6 @@ async function updateComputer(req, res) {
         req.body.updateRoom
     );
 
-    // console.log(req.body.searchId);
-    console.log(req.body.searchName);
-    console.log(req.body.updateName);
-    // console.log(req.body.updateStatus);
-    // console.log(req.body.updateNotes);
-    // console.log(req.body.updateRoom);
-
     let computers = await db.getComputers();
     res.render("dc", { "computers": computers });
     console.log("Ping from update");
