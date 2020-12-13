@@ -7,15 +7,14 @@
     <link rel="stylesheet" type="text/css" href="custom-styles.css" />
     <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <!-- <script src="script.js"></script> Duplicating objects... -->
 </head>
 
 <body style="margin: 20px">
     <h3>Desk Manager</h3>
     <h4 class="text-muted">Status Checker</h4>
-    <br />
+    <br/>
 
-    <!-- ROOM CONTROLLER -->
+    <!-- ROOM CONTROLLER 
     <div class="row">
         <div id="padded-box" class="col-sm-6 border border-primary rounded">
             <h5>Controller</h5>
@@ -58,38 +57,37 @@
             </div>
             <button id="btnRoomRemove" class="btn btn-danger border border-warning" disabled="true">Remove Room</button>
         </div>
+        -->
 
-        <!-- COMPUTER CONTROLLER -->
-        <div id="padded-box" class="col-sm-6 border border-secondary rounded">
-            <div id="formBox">
-                <h5>Computer Room</h5>
-                <div id="computer-form-box" class="border border-secondary rounded;">
-                    <form>
-                        <div class="form-group">
-                            <label for="txtComputerID">Computer ID (10 characters)</label>
-                            <input type="text" id="txtComputerID" class="form-control" maxlength="10"
-                                placeholder="Leave blank for random ID" />
-                        </div>
-                        <div class="form-group">
-                            <label for="txtComputerStatus">Computer Status</label>
-                            <select id="txtComputerStatus" class="form-control">
-                                <option>Working</option>
-                                <option>Not working</option>
-                                <option>Scheduled for maintenance</option>
-                                <option>N/A</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="txtComputerNotes">Computer Notes</label>
-                            <input type="text" id="txtComputerNotes" class="form-control" placeholder="Notes" />
-                        </div>
-                        <input type="button" id="btnComputerAdd" class="btn btn-primary" disabled="true"
-                            value="Add Computer" />
-                    </form>
-                </div>
+    <!-- COMPUTER CONTROLLER -->
+    <div id="padded-box" class="col-sm-6 border border-secondary rounded">
+        <div id="formBox">
+            <h5>Computer Room</h5>
+            <div id="computer-form-box" class="border border-secondary rounded;">
+                <form>
+                    <div class="form-group">
+                        <label for="txtComputerID">Computer ID (10 characters)</label>
+                        <input type="text" id="txtComputerID" class="form-control" maxlength="10"
+                            placeholder="Leave blank for random ID" />
+                    </div>
+                    <div class="form-group">
+                        <label for="txtComputerStatus">Computer Status</label>
+                        <select id="txtComputerStatus" class="form-control">
+                            <option>Working</option>
+                            <option>Not working</option>
+                            <option>Scheduled for maintenance</option>
+                            <option>N/A</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtComputerNotes">Computer Notes</label>
+                        <input type="text" id="txtComputerNotes" class="form-control" placeholder="Notes" />
+                    </div>
+                    <input type="button" id="btnComputerAdd" class="btn btn-primary" disabled="true"
+                        value="Add Computer" />
+                </form>
             </div>
         </div>
-    </div>
     </div>
 
     <!-- COMPUTER TABLE-->
@@ -103,12 +101,18 @@
                             <th>Computer ID</th>
                             <th>Computer status</th>
                             <th>Computer notes</th>
-                            <th>...</th>
+                            <th>Room ID</th>
                         </tr>
                     </thead>
                     <tbody id="tblComputer">
+                        <% for (i = 0; i < computers.length; i++) { %>
                         <tr>
+                            <td><%= computers[i].pcid %></td>
+                            <td><%= computers[i].status %></td>
+                            <td><%= computers[i].notes %></td>
+                            <td><%= computers[i].roomid %></td>
                         </tr>
+                        <% } %>
                     </tbody>
                 </table>
             </div>
@@ -116,20 +120,20 @@
     </div>
 </body>
 
-    <!-- TEST ENVIRONMENT -->
-    <div id="mocha"></div>
+<!-- TEST ENVIRONMENT -->
+<div id="mocha"></div>
 
-    <script src="https://unpkg.com/chai/chai.js"></script>
-    <script src="https://unpkg.com/mocha/mocha.js"></script>
+<script src="https://unpkg.com/chai/chai.js"></script>
+<script src="https://unpkg.com/mocha/mocha.js"></script>
 
-    <script class="mocha-init">
-        mocha.setup('tdd');
-    </script>
+<script class="mocha-init">
+    mocha.setup('tdd');
+</script>
 
-    <script src="script.js"></script>
+<script src="../files/script.js"></script>
 
-    <script class="mocha-exec">
-        mocha.run();
-    </script>
+<script class="mocha-exec">
+    mocha.run();
+</script>
 
 </html>

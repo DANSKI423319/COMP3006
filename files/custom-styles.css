@@ -1,6 +1,6 @@
 #table-overflow {
     overflow: auto;
-    max-height: 420px; 
+    max-height: 580px; 
 }
 
 #table-overflow-2 {
@@ -16,6 +16,10 @@
 #computer-form-box {
     background-color: rgb(223, 223, 223); 
     padding: 10px
+}
+
+#main-table {
+    height: auto;
 }
 
 .red-border {
