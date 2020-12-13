@@ -21,14 +21,16 @@ app.set("view engine", "ejs");
 // Enable post...
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// Get routes
 app.get("/olddc", function (request, response) { response.render("olddc"); })
 app.get("/pcs", routes.allComputers);
 app.get("/dc", routes.listComputers);
 
+// Post routes
 app.post("/dcfilter", routes.listComputers);
-app.post("/add", routes.insertComputer);
+app.post("/insert", routes.insertComputer);
 app.post("/update", routes.updateComputer);
+app.post("/remove", routes.removeComputer);
 
 app.listen(port, function () {
     console.log("Listening on " + port);

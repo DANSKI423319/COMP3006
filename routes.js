@@ -7,13 +7,13 @@ async function allComputers(req, res) {
     res.send({ "computers": computers });
 }
 
-// List computers in UI, also used to filter
+// List computers
 async function listComputers(req, res) {
     let computers = await db.getComputers(req.body.roomFilter);
     res.render("dc", { "computers": computers });
 }
 
-// Add a computer
+// Add computer
 async function insertComputer(req, res) {
     db.addComputer(
         req.body.addName,
@@ -24,9 +24,9 @@ async function insertComputer(req, res) {
 
     let computers = await db.getComputers();
     res.render("dc", { "computers": computers });
-    console.log("Ping from Routes");
 }
 
+// Update computer
 async function updateComputer(req, res) {
     db.updateComputer(
         req.body.searchName,
@@ -38,11 +38,23 @@ async function updateComputer(req, res) {
 
     let computers = await db.getComputers();
     res.render("dc", { "computers": computers });
-    console.log("Ping from update");
 }
 
-module.exports.allComputers = allComputers; // API
+// Remove computer
+async function removeComputer(req, res) {
+    db.removeComputer(
+        req.body.removeInput
+    );
 
-module.exports.listComputers = listComputers; // Home page
-module.exports.insertComputer = insertComputer; // Insert computer
-module.exports.updateComputer = updateComputer; // Update a computer
+    let computers = await db.getComputers();
+    res.render("dc", { "computers": computers });
+}
+
+ // API
+module.exports.allComputers = allComputers;
+
+// CRUD
+module.exports.listComputers = listComputers;
+module.exports.insertComputer = insertComputer;
+module.exports.updateComputer = updateComputer;
+module.exports.removeComputer = removeComputer;

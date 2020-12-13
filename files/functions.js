@@ -137,7 +137,7 @@ module.exports.clickElement = clickElement;
 // Random number generator
 function RandomNum() {
     var RandomNum = Math.random();
-    var num = Math.round(RandomNum * 10000);
+    var num = Math.round(RandomNum * 100);
     return num;
 }
 

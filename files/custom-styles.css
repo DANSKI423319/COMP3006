@@ -18,6 +18,10 @@
     padding: 10px
 }
 
+#main-table {
+    height: auto;
+}
+
 .red-border {
     border-style: solid 2px, red;
 }
