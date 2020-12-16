@@ -5,8 +5,10 @@
   <title>Computers-Dev</title>
   <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="custom-styles.css" />
-  <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/mocha/mocha.css" />
+  <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="script.js"></script>
 </head>
 
 <body style="margin: 20px">
@@ -100,18 +102,28 @@
             </tr>
           </thead>
           <tbody id="tblComputers">
-            <% for (i = 0; i < computers.length; i++) { %>
-            <tr>
-              <td id="id"><%= computers[i]._id %></td>
-              <td id="name"><%= computers[i].name %></td>
-              <td id="status"><%= computers[i].status %></td>
-              <td id="notes"><%= computers[i].notes %></td>
-              <td id="room"><%= computers[i].room %></td>
-              <td>
-                <button class="getPC">Update</button>
-              </td>
-            </tr>
-            <% } %>
+            <% for (i=0; i < computers.length; i++) { %>
+              <tr>
+                <td id="id">
+                  <%= computers[i]._id %>
+                </td>
+                <td id="name">
+                  <%= computers[i].name %>
+                </td>
+                <td id="status">
+                  <%= computers[i].status %>
+                </td>
+                <td id="notes">
+                  <%= computers[i].notes %>
+                </td>
+                <td id="room">
+                  <%= computers[i].room %>
+                </td>
+                <td>
+                  <button class="getPC">Update</button>
+                </td>
+              </tr>
+              <% } %>
           </tbody>
         </table>
       </div>
@@ -149,97 +161,16 @@
   </div>
 
   <!-- Error message -->
-  <p id="errorMsg" style="color: rgb(216, 204, 204)"></p>
+  <p id="errorMsg" style="color: crimson"></p>
 
-  <script>
-    ///// JAVASCRIPT /////
-
-    // Lock or Unlock update form
-    function blockType(bool) {
-      $("#txtId").attr("disabled", bool);
-      $("#txtName1").attr("disabled", bool);
-      $("#txtName2").attr("disabled", bool);
-      $("#txtStatus").attr("disabled", bool);
-      $("#txtNotes").attr("disabled", bool);
-      $("#txtRoom").attr("disabled", bool);
-      $("#btnUpdate").attr("disabled", bool);
-    }
-
-    function RandomNum() {
-      var RandomNum = Math.random();
-      var num = Math.round(RandomNum * 100);
-      return num;
-    }
-
-    /////// JQUERY ///////
-
-    $(document).ready(function () {
-      // Get PC information (update form)
-      $(".getPC").click(function () {
-        let row = $(this).closest("tr");
-        let id = row.find("#id").text();
-        let pcName = row.find("#name").text();
-        let pcStatus = row.find("#status").text();
-        let pcNotes = row.find("#notes").text();
-        let pcRoom = row.find("#room").text();
-
-        blockType(false);
-
-        $("#txtSearch").val(id);
-        $("#txtName1").val(pcName);
-        $("#txtName2").val(pcName);
-        $("#txtStatus").val(pcStatus);
-        $("#txtNotes").val(pcNotes);
-        $("#txtRoom").val(pcRoom);
-      });
-
-      // Insert form validation
-      $(".insertForm").submit(function (f) {
-        let name = $("#inputName").val();
-        let notes = $("#inputNotes").val();
-        let room = $("#inputRoom").val();
-
-        if (name == "") {
-          f.preventDefault();
-          $("#errorMsg").html("Please name your computer");
-        } else if (notes == "") {
-          $("#inputNotes").val("...");
-        } else if (room == "") {
-          $("#inputRoom").val("0");
-        } else {
-          $("#errorMsg").html(null);
-          $("#errorMsg").attr("hidden", "true");
-        }
-      });
-
-      // Update form validation
-      $(".updateForm").submit(function (f) {
-        let name1 = $("#txtName1").val();
-        let name2 = $("#txtName2").val();
-        let notes = $("#txtNotes").val();
-        let room = $("txtRoom").val();
-
-        if (name1 == "") {
-          f.preventDefault();
-          $("#errorMsg").html("Please do note remove text in the red box");
-        } else if (name2 == "") {
-          f.preventDefault();
-          $("#errorMsg").html("Please enter a new value");
-        } else if (notes == "") {
-          $("#txtNotes").val("...");
-        } else if (room == "") {
-          $("#txtRoom").val("0");
-        } else {
-          $("#errorMsg").html(null);
-          $("#errorMsg").attr("hidden", "true");
-        }
-      });
-    });
-
-    $(window).ready(function () {
-      // Nothing...
-    });
-  </script>
 </body>
+
+<!-- Test Environment -->
+<div id="mocha"></div>
+<script src="https://unpkg.com/chai/chai.js"></script>
+<script src="https://unpkg.com/mocha/mocha.js"></script>
+<script class="mocha-init"> mocha.setup("tdd");</script>
+<script src="system-tests.js"></script>
+<script class="mocha-exec"> mocha.run();</script>
 
 </html>
