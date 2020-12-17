@@ -17,17 +17,6 @@ let server = http.createServer(app);
 // Statics
 app.use(express.static(path.join(__dirname, "files")));
 
-// Websocket
-let io = socketIo(server);
-io.on("connection", function(socket) { // Establishing connection
-    socket.emit("confirm connection", "Client has connected..."); // Confirm connection from server
-
-    socket.on("request", function(msg) { // Request from client
-        console.log("Recieved message: '" + msg + "'");
-        socket.emit("response", "Hello from the server"); // Response from server
-    })
-})
-
 // Views
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -46,6 +35,17 @@ app.post("/insert", routes.insertComputer);
 app.post("/update", routes.updateComputer);
 app.post("/remove", routes.removeComputer);
 
-app.listen(port, function () {
+// Websocket
+let io = socketIo(server);
+io.on("connection", function(socket) { // Establishing connection
+    socket.emit("confirm connection", " Server online"); // Confirm connection from server
+
+    socket.on("request", function(msg) { // Request from client
+        console.log("Requst MSG: '" + msg + "'");
+        socket.emit("response", " Client connected to server"); // Response from server
+    });
+});
+
+server.listen(port, function () {
     console.log("Listening on " + port);
 });
