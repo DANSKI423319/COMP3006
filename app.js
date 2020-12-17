@@ -41,8 +41,8 @@ io.on("connection", function(socket) { // Establishing connection
     socket.emit("confirm connection", " Server online"); // Confirm connection from server
 
     socket.on("request", function(msg) { // Request from client
-        console.log("Requst MSG: '" + msg + "'");
-        socket.emit("response", " Client connected to server"); // Response from server
+        console.log("Socket.Io MSG: '" + msg + "'");
+        socket.emit("response", " Client connected"); // Response from server
     });
 });
 

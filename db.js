@@ -29,7 +29,7 @@ function addComputer(_name, _status, _notes, _room) {
         });
 }
 
-// Update a computer
+// Update a computer3
 function updateComputer(_search, _name, _status, _notes, _room) {
     models.Computer.findOneAndUpdate(
         {
@@ -44,7 +44,7 @@ function updateComputer(_search, _name, _status, _notes, _room) {
         (error, result) => {
             if (error) {
                 console.log(error);
-            } else { 
+            } else {
                 console.log("Edited:");
                 console.log(result);
             }
