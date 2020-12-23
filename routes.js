@@ -5,7 +5,7 @@ async function allComputers(req, res) {
     let computers = await db.getComputers();
     res.setHeader("content-type", "text/json");
     res.send({ "computers": computers });
-}
+};
 
 // List computers
 async function listComputers(req, res) {
@@ -22,7 +22,7 @@ async function insertComputer(req, res) {
         req.body.addRoom
     );
 
-    let computers = await db.getComputers();
+    let computers = await db.getComputers(req.body.roomFilter);
     res.render("dc", { "computers": computers });
 }
 
@@ -50,7 +50,7 @@ async function removeComputer(req, res) {
     res.render("dc", { "computers": computers });
 }
 
- // API
+// API
 module.exports.allComputers = allComputers;
 
 // CRUD

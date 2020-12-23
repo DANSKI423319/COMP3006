@@ -17,7 +17,7 @@
   <br />
 
   <div class="row">
-    <div id="padded-box" class="col-sm-2 border border-secondary rounded">
+    <div id="padded-box" class="col-sm-3 border border-secondary rounded">
       <div id="formBox">
         <!-- Add Computer Form -->
         <div id="computer-form-box" class="border border-secondary rounded;">
@@ -117,7 +117,7 @@
       </div>
     </div>
 
-    <div id="padded-box" class="col-sm-2 border border-secondary rounded">
+    <div id="padded-box" class="col-sm-3 border border-secondary rounded">
       <a href="/dc">Remove Filter / Refresh to DC</a>
 
       <!-- Filter room form -->
@@ -138,24 +138,23 @@
         <form method="post" action="/remove">
           <div class="form-group">
             <label for="removeInput">Delete (by name)</label>
-            <input type="text" name="removeInput" class="form-control" placeholder="Computer name..." />
+            <input type="text" name="removeInput" id="txtRemove" class="form-control" placeholder="Computer name..." />
           </div>
           <div class="form-group">
-            <input type="submit" value="Remove" class="form-control btn btn-danger" />
+            <input type="submit" value="Remove" id="btnRemove" class="form-control btn btn-danger" />
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Error message -->
-  <p id="errorMsg" style="color: crimson"></p>
-
+  <h4 class="text-muted">Utilities</h4>
   <!-- Websockets -->
   <script src="sockets.js"></script>
-  <h4 class="text-muted">Utilities</h4>
   <ul id="messages"></ul>
   <p id="socketMsg"></p>
+  <!-- Error message -->
+  <p id="errorMsg" style="color: crimson"></p>
 </body>
 
 <!-- Test Environment -->
@@ -166,6 +165,9 @@
   mocha.setup("tdd");
 </script>
 <script src="system-tests.js"></script>
+<!-- 
+    
+  -->
 <script class="mocha-exec">
   mocha.run();
 </script>

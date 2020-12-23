@@ -11,13 +11,18 @@ function blockType(bool) {
     $("#btnUpdate").attr("disabled", bool);
 }
 
-function RandomNum() {
-    var RandomNum = Math.random();
-    var num = Math.round(RandomNum * 100);
-    return num;
+function clickElement(element) {
+    try {
+        element.trigger("click");
+    } catch(err) {
+        var event = new MouseEvent("click", {view: window, cancelable: true, bubbles: true});
+        element.dispatchEvent(event);
+    }
 }
 
 /////// JQUERY ///////
+
+let url = "localhost:9000/dc"
 
 $(document).ready(function () {
     // Get PC information (update form)
@@ -37,6 +42,8 @@ $(document).ready(function () {
         $("#txtStatus").val(pcStatus);
         $("#txtNotes").val(pcNotes);
         $("#txtRoom").val(pcRoom);
+
+        location.replace("localhost:9000/pcs");
     });
 
     // Insert form validation
@@ -53,8 +60,8 @@ $(document).ready(function () {
         } else if (room == "") {
             $("#inputRoom").val("0");
         } else {
-            $("#errorMsg").html(null);
-            $("#errorMsg").attr("hidden", "true");
+            window.location.replace(url);
+            $("#errorMsg").html("Action Success");
         }
     });
 
@@ -76,12 +83,13 @@ $(document).ready(function () {
         } else if (room == "") {
             $("#txtRoom").val("0");
         } else {
-            $("#errorMsg").html(null);
-            $("#errorMsg").attr("hidden", "true");
+            $("#errorMsg").html("Action Success");
         }
     });
 });
 
 $(window).ready(function () {
-    // Nothing...
+    //var element = document.getElementById('btnComputerAdd');
+    //$("#inputName").val("PC-TEST");
+    //clickElement(element);
 });
