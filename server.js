@@ -30,7 +30,7 @@ app.get("/pcs", routes.allComputers);
 app.get("/dc", routes.listComputers);
 
 // Post routes
-app.post("/dcfilter", routes.listComputers);
+app.post("/filter", routes.listComputers);
 app.post("/insert", routes.insertComputer);
 app.post("/update", routes.updateComputer);
 app.post("/remove", routes.removeComputer);

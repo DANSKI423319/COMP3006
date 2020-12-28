@@ -1,14 +1,15 @@
-const { exception } = require("console");
 let models = require("./computer-schema");
+let mongoose = require("mongoose");
 
 /*
 *   The use of try / catches have been used for running tests as that the DB commands
 *   called from the schema part of the file (that starts with: models.Computer.collection...) 
-*   is seen by the code as out of scope, as a result of this it will only return 'undefined'.
+*   is seen by the code as out of scope, as a result of this scope problem; returns typically come back as 'undefined'.
 */
 
 // Filters database output by roomid (optional)
 async function getComputers(_room) {
+    
     let filter = {};
     if (_room) {
         filter.room = _room;
@@ -17,9 +18,41 @@ async function getComputers(_room) {
     return await models.Computer.find(filter);
 }
 
+// Search by name and remove (used by tests for teardown functions or cleaning)
+function searchAndRemove(_search) {
+
+    try {
+
+        let vault = models.Computer.find({});
+        let meme = vault.then(function (docs) {
+
+            for (let i = 0; i < docs.length; i++) {
+
+                if (docs[i].name == _search) {
+
+                    let id_ = docs[i]._id;
+                    console.log("({ _id: " + docs[i]._id + ", name: " + docs[i].name + " })")
+                    removeComputer(id_);
+
+                    { break }
+
+                }
+            }
+        })
+
+        return "Success";
+
+    } catch (e) {
+
+        console.log(e);
+        return "Fail";
+
+    }
+}
 
 // Add a computer to the database
 function addComputer(_name, _status, _notes, _room) {
+
     let object = {
         name: _name,
         status: _status,
@@ -33,7 +66,7 @@ function addComputer(_name, _status, _notes, _room) {
             if (err) {
                 console.log(err);
             } else {
-                console.log("Inserted: " + res.insertedCount);
+                // console.log("Inserted: " + res.insertedCount);
             }
         });
 
@@ -63,9 +96,9 @@ function updateComputer(_search, _name, _status, _notes, _room) {
             }
         }, (err, res) => {
             if (res.nModified == 0) {
-                throw "Update Error: Search out of bounds [" + _search +"]";
+                console.log("Anticipated Update Error: Search out of bounds [" + _search + "]");
             } else {
-                console.log("Updated: " + res.nModified);
+                // console.log("Updated: " + res.nModified);
             }
         });
 
@@ -81,18 +114,17 @@ function updateComputer(_search, _name, _status, _notes, _room) {
 }
 
 // Remove a computer
-function removeComputer(_search) {
+function removeComputer(id_) {
 
     try {
 
-        models.Computer.deleteOne({ name: _search },
-            (err, res) => {
-                if (res.deletedCount == 0) {
-                    throw "Remove Error: Search out of bounds [" + _search + "]";
-                } else {
-                    console.log("Removed: " + res.deletedCount);
-                }
-            })
+        models.Computer.deleteOne({ _id: id_ }, (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Removed: " + res.deletedCount);
+            }
+        })
 
         return "Success";
 
@@ -107,6 +139,7 @@ function removeComputer(_search) {
 
 // Accessors...
 module.exports.getComputers = getComputers;
+module.exports.searchAndRemove = searchAndRemove;
 module.exports.addComputer = addComputer;
 module.exports.updateComputer = updateComputer;
 module.exports.removeComputer = removeComputer;

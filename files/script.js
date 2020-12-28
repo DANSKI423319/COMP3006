@@ -42,8 +42,7 @@ $(document).ready(function () {
         $("#txtStatus").val(pcStatus);
         $("#txtNotes").val(pcNotes);
         $("#txtRoom").val(pcRoom);
-
-        location.replace("localhost:9000/pcs");
+        $("#txtRemove").val(id);
     });
 
     // Insert form validation
@@ -90,6 +89,5 @@ $(document).ready(function () {
 
 $(window).ready(function () {
     //var element = document.getElementById('btnComputerAdd');
-    //$("#inputName").val("PC-TEST");
     //clickElement(element);
 });
