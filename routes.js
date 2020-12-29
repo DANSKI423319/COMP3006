@@ -29,7 +29,7 @@ async function insertComputer(req, res) {
 // Update computer
 async function updateComputer(req, res) {
     db.updateComputer(
-        req.body.searchName,
+        req.body.searchId,
         req.body.updateName,
         req.body.updateStatus,
         req.body.updateNotes,

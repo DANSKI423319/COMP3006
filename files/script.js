@@ -2,7 +2,7 @@
 
 // Lock or Unlock update form
 function blockType(bool) {
-    $("#txtId").attr("disabled", bool);
+    $("#txtSearch").attr("disabled", bool);
     $("#txtName1").attr("disabled", bool);
     $("#txtName2").attr("disabled", bool);
     $("#txtStatus").attr("disabled", bool);
@@ -22,9 +22,8 @@ function clickElement(element) {
 
 /////// JQUERY ///////
 
-let url = "localhost:9000/dc"
-
 $(document).ready(function () {
+
     // Get PC information (update form)
     $(".getPC").click(function () {
         let row = $(this).closest("tr");
@@ -59,9 +58,9 @@ $(document).ready(function () {
         } else if (room == "") {
             $("#inputRoom").val("0");
         } else {
-            window.location.replace(url);
-            $("#errorMsg").html("Action Success");
+            // ...
         }
+
     });
 
     // Update form validation
@@ -85,6 +84,7 @@ $(document).ready(function () {
             $("#errorMsg").html("Action Success");
         }
     });
+    
 });
 
 $(window).ready(function () {
