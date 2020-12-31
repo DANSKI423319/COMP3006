@@ -15,7 +15,7 @@ async function listComputers(req, res) {
 
 // Add computer
 async function insertComputer(req, res) {
-    db.addComputer(
+    db.createComputer(
         req.body.addName,
         req.body.addStatus,
         req.body.addNotes,
@@ -28,7 +28,7 @@ async function insertComputer(req, res) {
 
 // Update computer
 async function updateComputer(req, res) {
-    db.updateComputer(
+    db.updateComputerByID(
         req.body.searchId,
         req.body.updateName,
         req.body.updateStatus,
@@ -42,7 +42,7 @@ async function updateComputer(req, res) {
 
 // Remove computer
 async function removeComputer(req, res) {
-    db.removeComputer(
+    db.removeComputerByID(
         req.body.removeInput
     );
 

@@ -30,6 +30,7 @@ function createComputer(_name, _status, _notes, _room,) {
     });
 
     return "Complete";
+
 };
 
 // Update a computer by name
@@ -91,7 +92,7 @@ function removeComputerByID(id_) {
         } else {
             // console.log("Updated: " + res.nModified);
         }
-    })
+    });
 
 };
 
@@ -122,7 +123,7 @@ function searchAndFunction(_search, _function, _name, _status, _notes, _room) {
 
             }
         }
-    })
+    });
 
     return "Complete";
 
