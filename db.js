@@ -1,57 +1,18 @@
 let models = require("./computer-schema");
-let mongoose = require("mongoose");
-
-/*
-*   The use of try / catches have been used for running tests as that the DB commands
-*   called from the schema part of the file (that starts with: models.Computer.collection...) 
-*   is seen by the code as out of scope, as a result of this scope problem; returns typically come back as 'undefined'.
-*/
 
 // Filters database output by roomid (optional)
 async function getComputers(_room) {
-    
+
     let filter = {};
     if (_room) {
         filter.room = _room;
     }
 
     return await models.Computer.find(filter);
-}
-
-// Search by name and remove (used by tests for teardown functions or cleaning)
-function searchAndRemove(_search) {
-
-    try {
-
-        let vault = models.Computer.find({});
-        let meme = vault.then(function (docs) {
-
-            for (let i = 0; i < docs.length; i++) {
-
-                if (docs[i].name == _search) {
-
-                    let id_ = docs[i]._id;
-                    console.log("({ _id: " + docs[i]._id + ", name: " + docs[i].name + " })")
-                    removeComputer(id_);
-
-                    { break }
-
-                }
-            }
-        })
-
-        return "Success";
-
-    } catch (e) {
-
-        console.log(e);
-        return "Fail";
-
-    }
-}
+};
 
 // Add a computer to the database
-function addComputer(_name, _status, _notes, _room) {
+function createComputer(_name, _status, _notes, _room,) {
 
     let object = {
         name: _name,
@@ -60,86 +21,117 @@ function addComputer(_name, _status, _notes, _room) {
         room: parseInt(_room)
     };
 
-    try {
+    models.Computer.collection.insertOne(object, (err, res) => {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log("Inserted: " + res.insertedCount);
+        }
+    });
 
-        models.Computer.collection.insertOne(object, (err, res) => {
-            if (err) {
-                console.log(err);
-            } else {
-                // console.log("Inserted: " + res.insertedCount);
-            }
-        });
+    return "Complete";
+};
 
-        return "Success";
+// Update a computer by name
+function updateComputerByName(_search, _name, _status, _notes, _room) {
 
-    } catch (e) {
+    models.Computer.updateOne({ name: _search }, {
+        $set:
+        {
+            name: _name,
+            status: _status,
+            notes: _notes,
+            room: _room
+        }
+    }, (err, res) => {
+        if (err) {
+            console.log(err);
+        } else if (res.nModified == 0) {
+            throw ("Update out of bounds")
+        } else {
+            // console.log("Updated: " + res.nModified);
+        }
+    });
 
-        console.log(e);
-        return "Fail";
-
-    };
+    return "Complete";
 
 };
 
 // Update a computer 
-function updateComputer(_search, _name, _status, _notes, _room) {
+function updateComputerByID(id_, _name, _status, _notes, _room) {
 
-    try {
+    models.Computer.updateOne({ _id: id_ }, {
+        $set:
+        {
+            name: _name,
+            status: _status,
+            notes: _notes,
+            room: _room
+        }
+    }, (err, res) => {
+        if (err) {
+            console.log(err);
+        } else if (res.nModified == 0) {
+            throw ("Update out of bounds")
+        } else {
+            // console.log("Updated: " + res.nModified);
+        }
+    });
 
-        models.Computer.updateOne({ name: _search }, {
-            $set:
-            {
-                name: _name,
-                status: _status,
-                notes: _notes,
-                room: _room
-            }
-        }, (err, res) => {
-            if (res.nModified == 0) {
-                console.log("Anticipated Update Error: Search out of bounds [" + _search + "]");
-            } else {
-                // console.log("Updated: " + res.nModified);
-            }
-        });
-
-        return "Success";
-
-    } catch (e) {
-
-        console.log(e);
-        return "Fail";
-
-    };
-
-}
+};
 
 // Remove a computer
-function removeComputer(id_) {
+function removeComputerByID(id_) {
 
-    try {
+    models.Computer.deleteOne({ _id: id_ }, (err, res) => {
+        if (err) {
+            console.log(err);
+        } else if (res.deletedCount == 0) {
+            console.error("Removal out of bounds")
+        } else {
+            // console.log("Updated: " + res.nModified);
+        }
+    })
 
-        models.Computer.deleteOne({ _id: id_ }, (err, res) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("Removed: " + res.deletedCount);
+};
+
+// Search by name and remove (used by tests for teardown functions or cleaning)
+function searchAndFunction(_search, _function, _name, _status, _notes, _room) {
+
+    let vault = models.Computer.find({});
+
+    vault.then(function (docs) {
+
+        for (let i = 0; i < docs.length; i++) {
+
+            if (docs[i].name == _search) {
+
+                let id_ = docs[i]._id;
+
+                if (_function == "remove") {
+                    console.log("Removing: ({ _id: " + docs[i]._id + ", name: " + docs[i].name + " })")
+                    removeComputerByID(id_);
+                } else if (_function == "update") {
+                    console.log("Updating: ({ _id: " + docs[i]._id + ", name: " + docs[i].name + " }) => ({ name: " + _name + " })")
+                    updateComputerByID(id_, _name, _status, _notes, _room);
+                } else {
+                    // ...
+                }
+
+                { break }
+
             }
-        })
+        }
+    })
 
-        return "Success";
+    return "Complete";
 
-    } catch (e) {
+};
 
-        console.log(e);
-        return "Fail";
-
-    };
-
-}
-
-// Accessors...
 module.exports.getComputers = getComputers;
-module.exports.searchAndRemove = searchAndRemove;
-module.exports.addComputer = addComputer;
-module.exports.updateComputer = updateComputer;
-module.exports.removeComputer = removeComputer;
+module.exports.createComputer = createComputer;
+module.exports.updateComputerByID = updateComputerByID;
+module.exports.updateComputerByName = updateComputerByName;
+module.exports.removeComputerByID = removeComputerByID;
+module.exports.searchAndFunction = searchAndFunction;
+

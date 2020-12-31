@@ -5,35 +5,39 @@ suite("Unit Tests", function () {
 
     suiteSetup("Unit Tests", function () {
         this.name = "PC-1-Test",
-        this.status = "Working",
-        this.notes = "Works fine",
-        this.room = "1",
-        this.updateName = "PC-2-Test",
-        this.updateStatus = "Not Working",
-        this.updateNotes = "Hardware faults",
-        this.updatedRoom = "2"
-    });  
+            this.name2 = "PC-2-Test",
+            this.name3 = "PC-3-Test",
+            this.name4 = "PC-4-Test",
+            this.name5 = "PC-5-Test",
+            this.status = "Working",
+            this.notes = "Works fine",
+            this.room = "1"
+    });
 
-    // Tests for the successful insertion of a PC to the Database
     test("Insert", function () {
-        chai.assert.equal(db.addComputer(this.name, this.status, this.notes, this.room), "Success", "Should insert a new PC");
+        chai.assert.equal(db.createComputer(this.name, this.status, this.notes, this.room), "Complete", "Should insert a new PC");
+        //db.createComputer(this.name, this.status, this.notes, this.room);
     });
 
+    test("Update by name", function () {
+        chai.assert.equal(db.createComputer(this.name2, this.status, this.notes, this.room), "Complete", "Should insert a new PC");
+        chai.assert.equal(db.updateComputerByName(this.name2, this.name3, this.status, this.notes, this.room), "Complete", "Should update PC");
+    });
     
-    // Adds a new PC, and then tests for the succesful update of a PC in the database
-    test("Update", function () {
-        chai.assert.equal(db.addComputer(this.name, this.status, this.notes, this.room), "Success", "Should insert a new PC");
-        chai.assert.equal(db.updateComputer(this.name, this.updateName, this.updateStatus, this.updateNotes, this.updatedRoom), "Success", "Should update PC");
-    })
-
-    //Tests for the successful removal of a PC from the Database
-    test("Remove", function () {
-        chai.assert.equal(db.searchAndRemove(this.updateName), "Success", "Should remove a PC");
+    test("Update by ID", function () {
+        chai.assert.equal(db.createComputer(this.name4, this.status, this.notes, this.room), "Complete", "Should insert a new PC");
+        chai.assert.equal(db.searchAndFunction(this.name4, "update", this.name5, this.status, this.notes, this.room), "Complete", "Should update by an ID that is searched for");
     });
 
-    // Remove the first PC that was added during the tests
+    test("Remove by ID", function () {
+        chai.assert.equal(db.createComputer(this.name5, this.status, this.notes, this.room), "Complete", "Should insert a new PC");
+        chai.assert.equal(db.searchAndFunction(this.name5, "remove"), "Complete", "Remove a PC by ID");
+    });
+
     suiteTeardown("Unit Tests", function () {
-        db.searchAndRemove(this.name);
-    });  
-    
+        db.searchAndFunction(this.name, "remove");
+        db.searchAndFunction(this.name3, "remove");
+        db.searchAndFunction(this.name4, "remove"); // Bug in the tests?
+    });
+
 });
