@@ -8,7 +8,7 @@ let socketIo = require("socket.io");
 // Connect to DB...
 let url = "mongodb+srv://D29:Skillerz357@cluster-0.rkj1r.mongodb.net/computerdb?retryWrites=true&w=majority";
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
-let port = 9000;
+let port = process.env.PORT || 9000;
 
 // Start app
 let app = express();
