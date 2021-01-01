@@ -1,0 +1,38 @@
+{
+  "name": "comp3006",
+  "version": "1.0.0",
+  "description": "Desk manager application",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai-http": "^4.3.0",
+    "chai": "^4.2.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.8",
+    "socket.io": "^3.0.4"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1"
+  },
+  "scripts": {
+    "test": "mocha -ui tdd test/",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DANSKI423319/COMP3006.git"
+  },
+  "keywords": [
+    "javascript",
+    "nodejs"
+  ],
+  "author": "Daniel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DANSKI423319/COMP3006/issues"
+  },
+  "homepage": "https://github.com/DANSKI423319/COMP3006#readme"
+}
