@@ -12,58 +12,65 @@
 </head>
 
 <body style="margin: 20px">
-  <h3>Desk Manager</h3>
-  <h4 class="text-muted">Status Checker</h4>
+
+  <div class="col-sm-12 container-fluid main-header">
+    <h3>Desk Manager</h3>
+  </div>
 
   <!-- Error message -->
   <p id="errorMsg" style="color: crimson"></p>
 
   <div class="row">
-    <div id="padded-box" class="col-sm-3 border border-secondary rounded">
+    <div class="col-sm-3">
+      <div class="card">
 
-      <!-- Add Computer Form -->
-      <div id="computer-form-box">
-        <h5>Add Computer</h5>
+        <div class="card-header">
+          <h5>Create</h5>
+        </div>
 
-        <form method="post" action="/insert" class="insertForm">
+        <div class="card-body">
 
-          <div class="form-group">
-            <label for="addName">Name</label>
-            <input type="text" name="addName" id="inputName" class="form-control" maxlength="10"
-              placeholder="Type here..." />
-          </div>
+          <!-- Add Computer Form -->
+          <form method="post" action="/insert" class="insertForm">
 
-          <div class="form-group">
-            <label for="addStatus">Status</label>
-            <select name="addStatus" class="form-control">
-              <option>Working</option>
-              <option>Not working</option>
-              <option>Scheduled for maintenance</option>
-              <option>N/A</option>
-            </select>
-          </div>
+            <div class="form-group">
+              <label for="addName">Name</label>
+              <input type="text" name="addName" id="inputName" class="form-control" maxlength="10"
+                placeholder="Type here..." />
+            </div>
 
-          <div class="form-group">
-            <label for="addNotes">Notes</label>
-            <input type="text" name="addNotes" id="inputNotes" class="form-control" placeholder="Type here..." />
-          </div>
+            <div class="form-group">
+              <label for="addStatus">Status</label>
+              <select name="addStatus" class="form-control">
+                <option>Working</option>
+                <option>Not working</option>
+                <option>Scheduled for maintenance</option>
+                <option>N/A</option>
+              </select>
+            </div>
 
-          <div class="form-group">
-            <label for="addRoom">Room</label>
-            <input type="number" name="addRoom" id="inputRoom" class="form-control" placeholder="Type here..." />
-          </div>
+            <div class="form-group">
+              <label for="addNotes">Notes</label>
+              <input type="text" name="addNotes" id="inputNotes" class="form-control" placeholder="Type here..." />
+            </div>
 
-          <input type="submit" id="btnComputerAdd" class="form-control btn btn-primary" value="Confirm" />
+            <div class="form-group">
+              <label for="addRoom">Room</label>
+              <input type="number" name="addRoom" id="inputRoom" class="form-control" placeholder="Type here..." />
+            </div>
 
-        </form>
+            <input type="submit" id="btnComputerAdd" class="form-control btn btn-primary" value="Confirm" />
 
+          </form>
+
+        </div>
       </div>
     </div>
 
     <!-- Computer Table -->
     <div id="padded-box" class="col-sm-6 border border-secondary rounded">
-
       <div id="table-overflow">
+
         <h6 id="txtRoomSel" style="color: green"></h6>
 
         <table class="table" id="main-table">
@@ -75,7 +82,7 @@
               <th>Status</th>
               <th>Notes</th>
               <th>Room</th>
-              <th></th>
+              <th>...</th>
             </tr>
           </thead>
 
@@ -97,49 +104,70 @@
       </div>
     </div>
 
-    <div id="padded-box" class="col-sm-3 border border-secondary rounded">
-      
-      <!-- Update room form -->
-      <div id="computer-form-box">
-        <h5>Update Computer</h5>
+    <div class="col-sm-3">
+      <div class="card">
 
-        <form method="post" action="/update" class="updateForm">
+        <!-- Update room form -->
+        <div class="card-header">
+          <h5>Update</h5>
+        </div>
 
-          <div class="form-group">
-            <label for="searchId">Computer ID</label>
-            <input type="text" id="txtSearch" name="searchId" class="form-control border border-danger" 
-            title="Do not edit this field" disabled />
-          </div>
+        <div class="card-body">
 
-          <div class="form-group">
-            <label for="updateName">Name</label>
-            <input type="text" id="txtName1" name="updateName" class="form-control" disabled />
-          </div>
+          <form method="post" action="/update" class="updateForm">
 
-          <div class="form-group">
-            <label for="updateStatus">Status</label>
-            <select id="txtStatus" name="updateStatus" class="form-control" disabled>
-              <option>Working</option>
-              <option>Not working</option>
-              <option>Scheduled for maintenance</option>
-              <option>N/A</option>
-            </select>
-          </div>
+            <div class="form-group">
+              <label for="searchId">Computer ID</label>
+              <input type="text" id="txtSearch" name="searchId" class="form-control border border-danger"
+                title="Do not edit this field" disabled />
+            </div>
 
-          <div class="form-group">
-            <label for="updateNotes">Notes</label>
-            <input type="text" id="txtNotes" name="updateNotes" class="form-control" disabled />
-          </div>
+            <div class="form-group">
+              <label for="updateName">Name</label>
+              <input type="text" id="txtName1" name="updateName" class="form-control" disabled />
+            </div>
 
-          <div class="form-group">
-            <label for="updateRoom">Room</label>
-            <input type="number" id="txtRoom" name="updateRoom" class="form-control" disabled />
-          </div>
+            <div class="form-group">
+              <label for="updateStatus">Status</label>
+              <select id="txtStatus" name="updateStatus" class="form-control" disabled>
+                <option>Working</option>
+                <option>Not working</option>
+                <option>Scheduled for maintenance</option>
+                <option>N/A</option>
+              </select>
+            </div>
 
-          <input type="submit" id="btnUpdate" class="form-control btn btn-warning" value="Update" disabled />
+            <div class="form-group">
+              <label for="updateNotes">Notes</label>
+              <input type="text" id="txtNotes" name="updateNotes" class="form-control" disabled />
+            </div>
 
-        </form>
+            <div class="form-group">
+              <label for="updateRoom">Room</label>
+              <input type="number" id="txtRoom" name="updateRoom" class="form-control" disabled />
+            </div>
 
+            <input type="submit" id="btnUpdate" class="form-control btn btn-warning" value="Update" disabled />
+
+          </form>
+
+          <br>
+
+          <!-- Remove computer form -->
+          <form method="post" action="/remove">
+
+            <div class="form-group">
+              <input type="text" name="removeInput" id="txtRemove" class="form-control"
+                placeholder="Computer name..." />
+            </div>
+            
+            <div class="form-group">
+              <input type="submit" value="Remove" id="btnRemove" class="form-control btn btn-danger" />
+            </div>
+
+          </form>
+
+        </div>
       </div>
     </div>
   </div>

@@ -1,27 +1,30 @@
-#table-overflow {
-    overflow: auto;
-    max-height: 580px; 
-}
-
-#table-overflow-2 {
-    overflow: auto; 
-    max-height:130px;
-    height: 140px;
-}
-
 #padded-box {
-    padding: 20px
+  padding: 20px;
 }
 
-#computer-form-box {
-    background-color: rgb(223, 223, 223); 
-    padding: 10px
+.main-header {
+    background-color: #343a40; 
+    color: white; height: 40px;
 }
 
-#main-table {
-    height: auto;
+.table {
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
-.red-border {
-    border-style: solid 2px, red;
+.table tbody {
+  display: block;
+  height: 500px;
+  overflow: auto;
+  width: 100%;
+}
+
+.table thead {
+  display: block;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  width: 200px;
 }
