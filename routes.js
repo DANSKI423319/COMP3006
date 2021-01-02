@@ -9,8 +9,13 @@ async function allComputers(req, res) {
 
 // List computers
 async function listComputers(req, res) {
-    let computers = await db.getComputers(req.body.roomFilter);
+    let computers = await db.getComputers(req.body.filterSearch);
     res.render("dc", { "computers": computers });
+}
+
+async function filterQuery(req, res) {
+    let computers = await db.filterComputers(req.body.filterCategory, req.body.filterSearch);
+    res.render("dc", { "computers": computers});
 }
 
 // Add computer
@@ -58,3 +63,5 @@ module.exports.listComputers = listComputers;
 module.exports.insertComputer = insertComputer;
 module.exports.updateComputer = updateComputer;
 module.exports.removeComputer = removeComputer;
+
+module.exports.filterQuery = filterQuery;

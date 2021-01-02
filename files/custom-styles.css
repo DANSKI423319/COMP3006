@@ -19,6 +19,10 @@
   width: 100%;
 }
 
+.table tr:hover {
+  background-color: #f1f1f1;
+}
+
 .table thead {
   display: block;
 }

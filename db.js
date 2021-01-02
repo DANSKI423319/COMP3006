@@ -11,6 +11,23 @@ async function getComputers(_room) {
     return await models.Computer.find(filter);
 };
 
+// New custom filter
+async function filterComputers(_field, _value) {
+
+    let filter = {};
+    if (_field == "name") {
+        filter.name = _value;
+    } else if (_field == "status") {
+        filter.status = _value;
+    } else if (_field == "room") {
+        filter.room = _value;
+    } else {
+        throw ("Unexpected query search");
+    }
+
+    return await models.Computer.find(filter);
+};
+
 // Add a computer to the database
 function createComputer(_name, _status, _notes, _room,) {
 
@@ -48,7 +65,7 @@ function updateComputerByName(_search, _name, _status, _notes, _room) {
         if (err) {
             console.log(err);
         } else if (res.nModified == 0) {
-            throw ("Update out of bounds")
+            console.log("Update not made, continuing to avoid crash")
         } else {
             // console.log("Updated: " + res.nModified);
         }
@@ -73,7 +90,7 @@ function updateComputerByID(id_, _name, _status, _notes, _room) {
         if (err) {
             console.log(err);
         } else if (res.nModified == 0) {
-            throw ("Update out of bounds")
+            console.log("Update not made, continuing to avoid crash")
         } else {
             // console.log("Updated: " + res.nModified);
         }
@@ -88,7 +105,7 @@ function removeComputerByID(id_) {
         if (err) {
             console.log(err);
         } else if (res.deletedCount == 0) {
-            console.error("Removal out of bounds")
+            console.log("Removal not made, continuing to avoid crash")
         } else {
             // console.log("Updated: " + res.nModified);
         }
@@ -135,4 +152,5 @@ module.exports.updateComputerByID = updateComputerByID;
 module.exports.updateComputerByName = updateComputerByName;
 module.exports.removeComputerByID = removeComputerByID;
 module.exports.searchAndFunction = searchAndFunction;
+module.exports.filterComputers = filterComputers;
 

@@ -1,14 +1,15 @@
 ///// JAVASCRIPT /////
 
 // Lock or Unlock update form
-function blockType(bool) {
+function disableInputs(bool) {
     $("#txtSearch").attr("disabled", bool);
-    $("#txtName1").attr("disabled", bool);
-    $("#txtName2").attr("disabled", bool);
+    $("#txtName").attr("disabled", bool);
     $("#txtStatus").attr("disabled", bool);
     $("#txtNotes").attr("disabled", bool);
     $("#txtRoom").attr("disabled", bool);
     $("#btnUpdate").attr("disabled", bool);
+    $("#txtRemove").attr("disabled", bool);
+    $("#btnRemove").attr("disabled", bool);
 }
 
 function clickElement(element) {
@@ -33,11 +34,10 @@ $(document).ready(function () {
         let pcNotes = row.find("#notes").text();
         let pcRoom = row.find("#room").text();
 
-        blockType(false);
+        disableInputs(false);
 
         $("#txtSearch").val(id);
-        $("#txtName1").val(pcName);
-        $("#txtName2").val(pcName);
+        $("#txtName").val(pcName);
         $("#txtStatus").val(pcStatus);
         $("#txtNotes").val(pcNotes);
         $("#txtRoom").val(pcRoom);
@@ -65,24 +65,29 @@ $(document).ready(function () {
 
     // Update form validation
     $(".updateForm").submit(function (f) {
-        let name1 = $("#txtName1").val();
-        let name2 = $("#txtName2").val();
+        let name = $("#txtName").val();
         let notes = $("#txtNotes").val();
         let room = $("txtRoom").val();
 
-        if (name1 == "") {
+        if (name == "") {
             f.preventDefault();
-            $("#errorMsg").html("Please do note remove text in the red box");
-        } else if (name2 == "") {
-            f.preventDefault();
-            $("#errorMsg").html("Please enter a new value");
+            $("#errorMsg").html("ERROR: Please give your PC a name");
         } else if (notes == "") {
             $("#txtNotes").val("...");
         } else if (room == "") {
             $("#txtRoom").val("0");
         } else {
-            $("#errorMsg").html("Action Success");
+            // $("#errorMsg").html("Action Success");
         }
+    });
+
+    // Search bar for table
+    $("#search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+
+        $("#tblComputers tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
     });
     
 });

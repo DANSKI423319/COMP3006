@@ -17,8 +17,7 @@
     <h3>Desk Manager</h3>
   </div>
 
-  <!-- Error message -->
-  <p id="errorMsg" style="color: crimson"></p>
+  <br>
 
   <div class="row">
     <div class="col-sm-3">
@@ -59,7 +58,48 @@
               <input type="number" name="addRoom" id="inputRoom" class="form-control" placeholder="Type here..." />
             </div>
 
-            <input type="submit" id="btnComputerAdd" class="form-control btn btn-primary" value="Confirm" />
+            <input type="submit" id="btnComputerAdd" class="form-control btn btn-primary" value="Create" />
+
+          </form>
+
+        </div>
+      </div>
+
+      <br>
+
+      <div class="card">
+
+        <div class="card-header">
+          <h5>Query</h5>
+
+        </div>
+
+        <div class="card-body">
+
+          <!-- Query Filter Form -->
+          <form method="post" action="/filter">
+
+            <div class="row">
+              <div class="col">
+                <select name="filterCategory" class="form-control">
+                  <option>name</option>
+                  <option>status</option>
+                  <option>room</option>
+                </select>
+              </div>
+
+              <div class="col">
+                <input type="text" name="filterSearch" class="form-control" placeholder="Search..." />
+              </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+              <div class="col">
+                <input type="submit" class="form-control btn btn-secondary" value="Query" />
+              </div>
+            </div>
 
           </form>
 
@@ -69,39 +109,44 @@
 
     <!-- Computer Table -->
     <div id="padded-box" class="col-sm-6 border border-secondary rounded">
-      <div id="table-overflow">
 
-        <h6 id="txtRoomSel" style="color: green"></h6>
-
-        <table class="table" id="main-table">
-
-          <thead class="thead-dark">
-            <tr>
-              <th>Computer ID</th>
-              <th>Name</th>
-              <th>Status</th>
-              <th>Notes</th>
-              <th>Room</th>
-              <th>...</th>
-            </tr>
-          </thead>
-
-          <tbody id="tblComputers">
-            <% for (i=0; i < computers.length; i++) { %>
-              <tr>
-                <td id="id"><%= computers[i]._id %></td>
-                <td id="name"><%= computers[i].name %></td>
-                <td id="status"><%= computers[i].status %></td>
-                <td id="notes"><%= computers[i].notes %></td>
-                <td id="room"><%= computers[i].room %></td>
-                <td><button class="getPC">Update</button></td>
-              </tr>
-              <% } %>
-          </tbody>
-
-        </table>
-
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Search</span>
+        </div>
+        <input type="text" id="search" class="form-control">
       </div>
+
+      <table class="table" id="main-table">
+
+        <thead class="thead-dark">
+          <tr>
+            <th>Computer ID</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Notes</th>
+            <th>Room</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody id="tblComputers">
+          <% for (i=0; i < computers.length; i++) { %>
+            <tr>
+              <td id="id"><%= computers[i]._id %></td>
+              <td id="name"><%= computers[i].name %></td>
+              <td id="status"><%= computers[i].status %></td>
+              <td id="notes"><%= computers[i].notes %></td>
+              <td id="room"><%= computers[i].room %></td>
+              <td><button class="getPC">Update</button></td>
+            </tr>
+            <% } %>
+        </tbody>
+
+      </table>
+
+      <a href="/dc"><input type="button" class="btn btn-success" value="Refresh" /></a>
+
     </div>
 
     <div class="col-sm-3">
@@ -124,7 +169,7 @@
 
             <div class="form-group">
               <label for="updateName">Name</label>
-              <input type="text" id="txtName1" name="updateName" class="form-control" disabled />
+              <input type="text" id="txtName" name="updateName" class="form-control" disabled />
             </div>
 
             <div class="form-group">
@@ -157,12 +202,12 @@
           <form method="post" action="/remove">
 
             <div class="form-group">
-              <input type="text" name="removeInput" id="txtRemove" class="form-control"
-                placeholder="Computer name..." />
+              <input type="text" name="removeInput" id="txtRemove" class="form-control border border-danger" disabled />
             </div>
-            
+
             <div class="form-group">
-              <input type="submit" value="Remove" id="btnRemove" class="form-control btn btn-danger" />
+              <input type="submit" id="btnRemove" class="form-control btn btn-danger" value="Remove"
+                title="Do not edit this field" disabled />
             </div>
 
           </form>
@@ -180,7 +225,9 @@
   <ul id="messages"></ul>
   <p id="socketMsg"></p>
 
-  <a href="/dc">Remove Filter / Refresh to DC</a>
+  <!-- Error message -->
+  <p id="errorMsg" style="color: crimson"></p>
+
 
 </body>
 
