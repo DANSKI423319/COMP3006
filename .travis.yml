@@ -9,6 +9,3 @@ install:
   - npm install chai-http
   - npm install express
   - npm install mongoose
-
-script:
-  - node server.js
