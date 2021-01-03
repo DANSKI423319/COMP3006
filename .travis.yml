@@ -6,7 +6,7 @@ node_js:
   - node
 
 install:
-  - npm install mocha
+  - npm install -g mocha
   - npm install chai
   - npm install chai-http
   - npm install ejs
