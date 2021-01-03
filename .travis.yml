@@ -10,3 +10,6 @@ install:
   - npm install ejs
   - npm install express
   - npm install mongoose
+
+script:
+  - node server.js
