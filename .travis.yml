@@ -6,3 +6,5 @@ install:
   - npm install chai
   - npm install chai-http
   - npm install express
+script:
+  - echo "Test"
