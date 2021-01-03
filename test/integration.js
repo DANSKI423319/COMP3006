@@ -3,7 +3,6 @@ let chaiHttp = require("chai-http");
 let server = require("../server");
 let db = require("../db");
 
-/*
 chai.use(chaiHttp);
 
 suite("Integration Tests", function () {
@@ -38,4 +37,3 @@ suite("Integration Tests", function () {
     });
     
 });
-*/
