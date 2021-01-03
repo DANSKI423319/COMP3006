@@ -1,8 +1,8 @@
 $(document).ready(function () {
 
     $(function () {
-        //let socket = io("https://desk-manager.herokuapp.com");
-        let socket = io("localhost:9000");
+        let socket = io("https://desk-manager.herokuapp.com");
+        //let socket = io("localhost:9000");
 
         var dt = new Date();
         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
