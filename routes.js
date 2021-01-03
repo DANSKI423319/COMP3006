@@ -13,6 +13,7 @@ async function listComputers(req, res) {
     res.render("dc", { "computers": computers });
 }
 
+// Filter query, specific search
 async function filterQuery(req, res) {
     let computers = await db.filterComputers(req.body.filterCategory, req.body.filterSearch);
     res.render("dc", { "computers": computers});
@@ -47,12 +48,22 @@ async function updateComputer(req, res) {
 
 // Remove computer
 async function removeComputer(req, res) {
-    db.removeComputerByID(
-        req.body.removeInput
-    );
+    
+    if(req.body.removeInput.length == 24) {
+        
+        db.removeComputerByID(req.body.removeInput);
 
-    let computers = await db.getComputers();
-    res.render("dc", { "computers": computers });
+        let computers = await db.getComputers();
+        res.render("dc", { "computers": computers });
+
+
+    } else {
+
+        let computers = await db.getComputers();
+        res.render("dc", { "computers": computers });
+
+    }
+    
 }
 
 // API

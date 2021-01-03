@@ -41,7 +41,7 @@ io.on("connection", function (socket) { // Establishing connection
     socket.emit("confirm connection", " Client Connected"); // Confirm connection from server
 
     socket.on("request", function (msg) { // Request from client
-        console.log("Socket: '" + msg + "'");
+        console.log("S.IO: '" + msg + "'");
         socket.emit("response", " Server Response"); // Response from server
     });
 });
@@ -50,4 +50,5 @@ server.listen(port, function () {
     console.log("Listening on " + port);
 });
 
+// Export for tests
 module.exports.app = app;

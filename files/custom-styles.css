@@ -7,6 +7,12 @@
     color: white; height: 40px;
 }
 
+.main-socket {
+  background-color: #343a40; 
+  color: gray; height: 40px;
+  text-align: right;
+} 
+
 .table {
   border-collapse: collapse;
   table-layout: fixed;
