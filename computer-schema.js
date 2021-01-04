@@ -7,10 +7,10 @@ let computerSchema = new mongoose.Schema({
     name: String, 
     status: String,
     notes: String,
-    room: Number
+    room: String
 });
 
 let Computers = mongoose.model("computers", computerSchema);
 
-// Accessor...
+// Accessor
 module.exports.Computer = Computers;

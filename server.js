@@ -24,12 +24,9 @@ app.set("view engine", "ejs");
 // Enable post...
 app.use(express.urlencoded({ extended: true }));
 
-// Get routes
-app.get("/olddc", function (request, response) { response.render("olddc"); })
+// Routes
 app.get("/pcs", routes.allComputers);
 app.get("/dc", routes.listComputers);
-
-// Post routes
 app.post("/filter", routes.filterQuery);
 app.post("/insert", routes.insertComputer);
 app.post("/update", routes.updateComputer);
@@ -46,8 +43,11 @@ io.on("connection", function (socket) { // Establishing connection
     });
 });
 
+var dt = new Date();
+var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+
 server.listen(port, function () {
-    console.log("Listening on " + port);
+    console.log(time +": Listening on " + port);
 });
 
 // Export for tests

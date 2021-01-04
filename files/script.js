@@ -2,21 +2,23 @@
 
 // Lock or Unlock update form
 function disableInputs(bool) {
+
     $("#txtSearch").attr("disabled", bool);
     $("#txtName").attr("disabled", bool);
     $("#txtStatus").attr("disabled", bool);
     $("#txtNotes").attr("disabled", bool);
     $("#txtRoom").attr("disabled", bool);
     $("#btnUpdate").attr("disabled", bool);
-    $("#txtRemove").attr("disabled", bool);
-    $("#btnRemove").attr("disabled", bool);
+    $("#cbRemove").attr("disabled", bool);
+
 }
 
+// Clicky element for UI tests, not used?
 function clickElement(element) {
     try {
         element.trigger("click");
-    } catch(err) {
-        var event = new MouseEvent("click", {view: window, cancelable: true, bubbles: true});
+    } catch (err) {
+        var event = new MouseEvent("click", { view: window, cancelable: true, bubbles: true });
         element.dispatchEvent(event);
     }
 }
@@ -27,8 +29,10 @@ $(document).ready(function () {
 
     // Get PC information (update form)
     $(".getPC").click(function () {
+
         let row = $(this).closest("tr");
         let id = row.find("#id").text();
+
         let pcName = row.find("#name").text();
         let pcStatus = row.find("#status").text();
         let pcNotes = row.find("#notes").text();
@@ -42,10 +46,13 @@ $(document).ready(function () {
         $("#txtNotes").val(pcNotes);
         $("#txtRoom").val(pcRoom);
         $("#txtRemove").val(id);
+        $("#txtRemoveName").val(pcName);
+
     });
 
     // Insert form validation
     $(".insertForm").submit(function (f) {
+
         let name = $("#inputName").val();
         let notes = $("#inputNotes").val();
         let room = $("#inputRoom").val();
@@ -56,7 +63,7 @@ $(document).ready(function () {
         } else if (notes == "") {
             $("#inputNotes").val("...");
         } else if (room == "") {
-            $("#inputRoom").val("0");
+            $("#inputRoom").val("Storage");
         } else {
             // ...
         }
@@ -65,6 +72,7 @@ $(document).ready(function () {
 
     // Update form validation
     $(".updateForm").submit(function (f) {
+
         let name = $("#txtName").val();
         let notes = $("#txtNotes").val();
         let room = $("txtRoom").val();
@@ -79,15 +87,31 @@ $(document).ready(function () {
         } else {
             // $("#errorMsg").html("Action Success");
         }
+
     });
 
     // Search bar for table
-    $("#search").on("keyup", function() {
+    $("#search").on("keyup", function () {
+
         var value = $(this).val().toLowerCase();
 
-        $("#tblComputers tr").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        $("#tblComputers tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
+
+    });
+
+    // Checbox
+    $("#cbRemove").click(function () {
+
+        if($(this).prop("checked") == true) {
+            $("#btnRemove").attr("disabled", false);
+            $("#txtRemove").attr("disabled", false);
+        } else if ($(this).prop("checked") == false) {
+            $("#btnRemove").attr("disabled", true);
+            $("#txtRemove").attr("disabled", true);
+        };
+
     });
     
 });

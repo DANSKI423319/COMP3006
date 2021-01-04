@@ -9,6 +9,7 @@ async function getComputers(_room) {
     }
 
     return await models.Computer.find(filter);
+
 };
 
 // New custom filter
@@ -26,6 +27,7 @@ async function filterComputers(_field, _value) {
     }
 
     return await models.Computer.find(filter);
+
 };
 
 // Add a computer to the database
@@ -35,7 +37,7 @@ function createComputer(_name, _status, _notes, _room,) {
         name: _name,
         status: _status,
         notes: _notes,
-        room: parseInt(_room)
+        room: _room
     };
 
     models.Computer.collection.insertOne(object, (err, res) => {
@@ -46,7 +48,7 @@ function createComputer(_name, _status, _notes, _room,) {
         }
     });
 
-    return "Complete";
+    return "Complete"
 
 };
 
@@ -65,7 +67,7 @@ function updateComputerByName(_search, _name, _status, _notes, _room) {
         if (err) {
             console.log(err);
         } else if (res.nModified == 0) {
-            console.log("Update not made, continuing to avoid crash")
+            console.log("Update not made, continuing to avoid crash");
         } else {
             // console.log("Updated: " + res.nModified);
         }
@@ -90,7 +92,7 @@ function updateComputerByID(id_, _name, _status, _notes, _room) {
         if (err) {
             console.log(err);
         } else if (res.nModified == 0) {
-            console.log("Update not made, continuing to avoid crash")
+            console.log("Update not made, continuing to avoid crash");
         } else {
             // console.log("Updated: " + res.nModified);
         }
@@ -105,7 +107,7 @@ function removeComputerByID(id_) {
         if (err) {
             console.log(err);
         } else if (res.deletedCount == 0) {
-            console.log("Removal not made, continuing to avoid crash")
+            console.log("Removal not made, continuing to avoid crash");
         } else {
             // console.log("Updated: " + res.nModified);
         }
@@ -116,7 +118,7 @@ function removeComputerByID(id_) {
 // Search by name and remove (used by tests for teardown functions or cleaning)
 function searchAndFunction(_search, _function, _name, _status, _notes, _room) {
 
-    let vault = models.Computer.find({});
+    let vault = models.Computer.find({})
 
     vault.then(function (docs) {
 
@@ -124,28 +126,29 @@ function searchAndFunction(_search, _function, _name, _status, _notes, _room) {
 
             if (docs[i].name == _search) {
 
-                let id_ = docs[i]._id;
+                let id_ = docs[i]._id
 
                 if (_function == "remove") {
                     console.log("Removing: ({ _id: " + docs[i]._id + ", name: " + docs[i].name + " })")
-                    removeComputerByID(id_);
+                    removeComputerByID(id_)
                 } else if (_function == "update") {
                     console.log("Updating: ({ _id: " + docs[i]._id + ", name: " + docs[i].name + " }) => ({ name: " + _name + " })")
-                    updateComputerByID(id_, _name, _status, _notes, _room);
+                    updateComputerByID(id_, _name, _status, _notes, _room)
                 } else {
                     // ...
                 }
 
                 { break }
 
-            }
-        }
+            };
+        };
     });
 
     return "Complete";
 
 };
 
+// Accessors
 module.exports.getComputers = getComputers;
 module.exports.createComputer = createComputer;
 module.exports.updateComputerByID = updateComputerByID;
