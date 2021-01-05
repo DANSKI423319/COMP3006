@@ -32,22 +32,46 @@ app.post("/insert", routes.insertComputer);
 app.post("/update", routes.updateComputer);
 app.post("/remove", routes.removeComputer);
 
-// Websocket
-let io = socketIo(server);
-io.on("connection", function (socket) { // Establishing connection
-    socket.emit("confirm connection", " Client Connected"); // Confirm connection from server
-
-    socket.on("request", function (msg) { // Request from client
-        console.log("S.IO: '" + msg + "'");
-        socket.emit("response", " Server Response"); // Response from server
-    });
-});
-
 var dt = new Date();
 var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
 
+// Websocket
+let io = socketIo(server);
+let clientCount = 0;
+
+// Establishing connection
+io.on('connection', function (socket) {                             
+
+    // Confirm connection from server
+    socket.emit('confirm connection', 'Client Connected');        
+
+    // Count users
+    clientCount++;
+    socket.emit('connected users', { clientCount: clientCount });   
+    console.log(time +': Connected users: ' + clientCount);
+
+    // Request from client
+    socket.on('request', function (msg) {                           
+
+        // Response from server
+        console.log('S.IO: ' + msg + '');
+        socket.emit('response', 'Server Response');                
+
+    });
+
+    // On disconnect, minus the user count (F5 counts as a disconnect, duh)
+    socket.on('disconnect', function () {                          
+
+        clientCount--;
+        socket.emit('connected users', { clientCount: clientCount });
+        console.log(time +': User disconnected (Users:  ' + clientCount + ')');
+
+    });
+
+});
+
 server.listen(port, function () {
-    console.log(time +": Listening on " + port);
+    console.log(time + ": Listening on " + port);
 });
 
 // Export for tests

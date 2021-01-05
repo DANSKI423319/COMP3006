@@ -5,10 +5,10 @@
   <title>Computers-Dev</title>
   <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="custom-styles.css" />
-  <link rel="stylesheet" type="text/css" href="https://unpkg.com/mocha/mocha.css" />
   <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="script.js"></script>
+  <script src="sockets.js"></script>
 </head>
 
 <body style="margin: 20px">
@@ -18,7 +18,7 @@
     <h3>Desk Manager</h3>
   </div>
   <div class="col-sm-6 container-fluid main-socket">
-    <p id="socket"></p>
+    <p id="txtUserCount"></p>
   </div>
 </div>
 
@@ -255,7 +255,6 @@
  <p id="errorMsg" style="color: crimson"></p>
 
   <!-- Websockets -->
-  <script src="sockets.js"></script>
   <ul id="messages"></ul>
   <p id="socketMsg"></p>
 
