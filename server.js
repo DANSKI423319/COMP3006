@@ -15,7 +15,8 @@ let app = express();
 let server = http.createServer(app);
 
 // Statics
-app.use(express.static(path.join(__dirname, "files")));
+app.use(express.static(path.join(__dirname, "./controllers/scripts")));
+app.use(express.static(path.join(__dirname, "./views/styles")));
 
 // Views
 app.set("views", path.join(__dirname, "views"));
