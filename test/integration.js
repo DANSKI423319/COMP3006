@@ -1,7 +1,7 @@
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 let server = require("../server");
-let db = require("../db");
+let db = require("../controllers/db");
 
 chai.use(chaiHttp);
 

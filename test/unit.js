@@ -1,5 +1,5 @@
 let chai = require("chai");
-let db = require("../db");
+let db = require("../controllers/db");
 
 suite("Unit Tests", function () {
 
