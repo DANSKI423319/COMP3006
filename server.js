@@ -2,7 +2,7 @@ let express = require("express");
 let http = require("http");
 let mongoose = require("mongoose");
 let path = require("path");
-let routes = require("./routes");
+let routes = require("./controllers/routes");
 let socketIo = require("socket.io");
 
 // Connect to DB...
