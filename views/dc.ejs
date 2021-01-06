@@ -14,13 +14,13 @@
 <body style="margin: 20px">
 
   <div class="row">
-  <div class="col-sm-6 container-fluid main-header">
-    <h3>Desk Manager</h3>
+    <div class="col-sm-6 container-fluid main-header">
+      <h3>Desk Manager</h3>
+    </div>
+    <div class="col-sm-6 container-fluid main-socket">
+      <p id="txtUserCount"></p>
+    </div>
   </div>
-  <div class="col-sm-6 container-fluid main-socket">
-    <p id="txtUserCount"></p>
-  </div>
-</div>
 
   <br>
 
@@ -39,7 +39,7 @@
 
             <div class="form-group">
               <label for="addName">Name</label>
-              <input type="text" name="addName" id="inputName" class="form-control" maxlength="10"
+              <input type="text" name="addName" id="inputName" class="form-control" maxlength="18"
                 placeholder="Type here..." />
             </div>
 
@@ -55,18 +55,21 @@
 
             <div class="form-group">
               <label for="addNotes">Notes</label>
-              <input type="text" name="addNotes" id="inputNotes" class="form-control" placeholder="Type here..." />
+              <input type="text" name="addNotes" id="inputNotes" class="form-control" maxlength="150" placeholder="Type here..." />
             </div>
 
             <div class="form-group">
               <label for="addRoom">Room</label>
-              <input type="text" name="addRoom" id="inputRoom" class="form-control" placeholder="Type here..." list="rooms"/>
+              <input type="text" name="addRoom" id="inputRoom" class="form-control" placeholder="Type here..."
+                maxlength="18" list="rooms" />
               <datalist id="rooms">
-              <% var pcs = [...new Set(computers.map(x => x.room))]; %>
-                <% for (i = pcs.length; i >= 0 ; i--) { %>
-                    <option><%= pcs[i] %></option>
-                    <% if (i == (pcs.length - 3)) { { break } } %>
-                  <% } %>
+                <% var pcs=[...new Set(computers.map(x=> x.room))]; %>
+                  <% for (i=pcs.length; i>= 0 ; i--) { %>
+                    <option>
+                      <%= pcs[i] %>
+                    </option>
+                    <% if (i==(pcs.length - 3)) { { break } } %>
+                      <% } %>
               </datalist>
             </div>
 
@@ -101,7 +104,7 @@
               </div>
 
               <div class="col">
-                <input type="text" name="filterSearch" class="form-control" placeholder="Search..." />
+                <input type="text" name="filterSearch" class="form-control" maxlength="18" placeholder="Case-sensitive search..." />
               </div>
             </div>
 
@@ -145,7 +148,7 @@
         <tbody id="tblComputers">
           <% for (i=0; i < computers.length; i++) { %>
             <tr>
-              <td id="id"><%= computers[i]._id %></td>
+              <td id="id""><%= computers[i]._id %></td>
               <td id="name"><%= computers[i].name %></td>
               <td id="status"><%= computers[i].status %></td>
               <td id="notes"><%= computers[i].notes %></td>
@@ -181,7 +184,7 @@
 
             <div class="form-group">
               <label for="updateName">Name</label>
-              <input type="text" id="txtName" name="updateName" class="form-control" disabled />
+              <input type="text" id="txtName" name="updateName" class="form-control" maxlength="18" disabled />
             </div>
 
             <div class="form-group">
@@ -196,12 +199,12 @@
 
             <div class="form-group">
               <label for="updateNotes">Notes</label>
-              <input type="text" id="txtNotes" name="updateNotes" class="form-control" disabled />
+              <input type="text" id="txtNotes" name="updateNotes" class="form-control" maxlength="100" disabled />
             </div>
 
             <div class="form-group">
               <label for="updateRoom">Room</label>
-              <input type="text" id="txtRoom" name="updateRoom" class="form-control" disabled />
+              <input type="text" id="txtRoom" name="updateRoom" class="form-control" maxlength="18" disabled />
             </div>
 
             <input type="submit" id="btnUpdate" class="form-control btn btn-warning" value="Update" disabled />
@@ -217,7 +220,8 @@
 
               <div class="row">
                 <div class="col-sm-8">
-                  <input type="text" name="removeInput" id="txtRemove" class="form-control border border-danger" title="Do not edit this field" disabled />
+                  <input type="text" name="removeInput" id="txtRemove" class="form-control border border-danger"
+                    title="Do not edit this field" disabled />
                 </div>
                 <div class="col-sm-4">
                   <input type="text" id="txtRemoveName" class="form-control" disabled />
@@ -229,7 +233,8 @@
             <div class="row">
 
               <div class="col">
-                <input type="submit" id="btnRemove" class="form-control btn btn-danger" value="Remove" title="This cannot be undone" disabled />
+                <input type="submit" id="btnRemove" class="form-control btn btn-danger" value="Remove"
+                  title="This cannot be undone" disabled />
               </div>
 
               <div class="col">
@@ -251,8 +256,8 @@
 
   <br>
 
- <!-- Error message -->
- <p id="errorMsg" style="color: crimson"></p>
+  <!-- Error message -->
+  <p id="errorMsg" style="color: crimson"></p>
 
   <!-- Websockets -->
   <ul id="messages"></ul>
